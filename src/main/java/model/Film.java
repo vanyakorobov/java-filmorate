@@ -52,33 +52,41 @@ public class Film {
     }
 
     public static class FilmBuilder {
+
         private final Film film;
         public FilmBuilder() {
             film = new Film();
         }
+
         public FilmBuilder id(int id) {
             film.id = id;
             return this;
         }
+
         public FilmBuilder name(String name) {
             film.name = name;
             return this;
         }
+
         public FilmBuilder description(String description) {
             film.description = description;
             return this;
         }
+
         public FilmBuilder releaseDate(Date releaseDate) {
             film.releaseDate = releaseDate;
             return this;
         }
+
         public FilmBuilder duration(int duration) {
             film.duration = duration;
             return this;
         }
+
         public Film build() {
             return film;
         }
+
     }
 
 }
