@@ -1,9 +1,9 @@
 package ru.yandex.practicum.filmorate;
 
-import exception.ValidationException;
-import manager.FilmsManager;
-import manager.Managers;
-import model.Film;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.manager.FilmsManager;
+import ru.yandex.practicum.filmorate.manager.Managers;
+import ru.yandex.practicum.filmorate.model.Film;
 import org.junit.jupiter.api.*;
 import java.time.LocalDate;
 import java.util.Map;

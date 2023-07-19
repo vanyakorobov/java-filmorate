@@ -1,14 +1,12 @@
-package controller;
+package ru.yandex.practicum.filmorate.controller;
 
-import exception.ValidationException;
-import exception.ValidationExceptionForResponse;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.exception.ValidationExceptionForResponse;
 import lombok.extern.slf4j.Slf4j;
-import manager.Managers;
-import manager.UsersManager;
-import model.User;
+import ru.yandex.practicum.filmorate.manager.Managers;
+import ru.yandex.practicum.filmorate.manager.UsersManager;
+import ru.yandex.practicum.filmorate.model.User;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController

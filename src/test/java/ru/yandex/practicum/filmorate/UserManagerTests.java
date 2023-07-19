@@ -1,9 +1,9 @@
 package ru.yandex.practicum.filmorate;
 
-import exception.ValidationException;
-import manager.Managers;
-import manager.UsersManager;
-import model.User;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.manager.Managers;
+import ru.yandex.practicum.filmorate.manager.UsersManager;
+import ru.yandex.practicum.filmorate.model.User;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
