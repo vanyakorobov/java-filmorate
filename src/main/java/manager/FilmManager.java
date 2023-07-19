@@ -5,7 +5,7 @@ import model.Film;
 
 import java.util.*;
 
-public class FilmManager{
+public class FilmManager {
     private static int filmId;
     private Map<Integer, Film> films = new HashMap();
 
@@ -45,6 +45,7 @@ public class FilmManager{
             }
         }
     }
+
     public void  descriptionValidation(String description) throws ValidationException {
         if (description.length() > 200) {
             throw new ValidationException("Описание не должно превышать 200 символов");
