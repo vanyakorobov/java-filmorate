@@ -1,51 +1,54 @@
 package controller;
 
 import exception.ValidationException;
+import exception.ValidationExceptionForResponse;
 import lombok.extern.slf4j.Slf4j;
-import manager.FilmManager;
+import manager.FilmsManager;
+import manager.Managers;
 import model.Film;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
+
 @RestController
 @RequestMapping("/films")
+@Slf4j
 public class FilmController {
+    private FilmsManager filmsManager = Managers.getDefaultFilmsManager();
 
-    FilmManager filmManager = new FilmManager();
-
-    @GetMapping("/all-film")
-    public List<Film> getFilms() {
-        List<Film> films = filmManager.getAllFilms();
-        log.info("Выведен список фильмов " + films);
+    @GetMapping
+    public List<Film> getFilmsList() {
+        List<Film> films = filmsManager.getFilmsList();
+        log.info("🟩 список фильмов выдан: " + films);
         return films;
     }
 
-    @PutMapping("/add-film")
-    public Film updateFilm(@RequestBody Film film) throws ValidationException {
+    @PostMapping
+    public Film createUser(@RequestBody Film newFilm) throws ValidationException, ValidationExceptionForResponse {
         try {
-            Film updatedFilm = filmManager.updateFilm(film);
-            return updatedFilm;
-        } catch (ValidationException exception) {
-            log.warn("Фильм не добавлен " + exception.getMessage());
-            throw new ValidationException("Фильм не добавлен");
+            Film createdFilm = filmsManager.createFilm(newFilm);
+            log.info("🟩 добавлен фильм: " + createdFilm);
+            return createdFilm;
+        } catch (ValidationException e) {
+            log.info("🟩 фильм НЕ добавлен");
+            log.warn("🟥" + e.getMessage());
+            System.out.println("⬛️" + e.getMessage());
+            throw new ValidationExceptionForResponse();
         }
     }
 
-    @PostMapping("/post-film")
-    public Film postFilm(@RequestBody Film film) throws ValidationException {
+    @PutMapping
+    public Film updateFilm(@RequestBody Film updatedFilm) throws ValidationException, ValidationExceptionForResponse {
         try {
-            Film newFilm = filmManager.createFilm(film);
-            return newFilm;
-        } catch (ValidationException exception) {
-            log.warn("Фильм не обновлён " + exception.getMessage());
-            throw new ValidationException("Фильм не обновлён");
+            Film currentFilm = filmsManager.updateFilm(updatedFilm);
+            log.info("🟩 фильм обновлен: " + currentFilm);
+            return currentFilm;
+        } catch (ValidationException e) {
+            log.info("🟩 фильм НЕ обновлен");
+            log.warn("🟥" + e.getMessage());
+            System.out.println("⬛️" + e.getMessage());
+            throw new ValidationExceptionForResponse();
         }
     }
-
-
-    // ДОБАВЛЕНИЕ ФИЛЬМА
-   // ОБНОВЛЕНИЕ ФИЛЬМА
-   // ПОЛУЧЕНИЕ ВСЕХ ФИЛЬМОВ
 }

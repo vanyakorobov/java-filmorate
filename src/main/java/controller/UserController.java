@@ -1,50 +1,55 @@
 package controller;
 
 import exception.ValidationException;
+import exception.ValidationExceptionForResponse;
 import lombok.extern.slf4j.Slf4j;
-import manager.UserManager;
+import manager.Managers;
+import manager.UsersManager;
 import model.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/users")
+@Slf4j
 public class UserController {
+    private UsersManager usersManager = Managers.getDefaultUsersManager();
 
-    UserManager userManager = new UserManager();
-
-    @GetMapping("/all-users")
-    public List<User> getUsers() {
-            List<User> allUsers = userManager.getAllUsers();
-            log.info("Выведен список пользователей: " + allUsers);
-            return allUsers;
+    @GetMapping
+    public List<User> getUsersList() {
+        List<User> users = usersManager.getUsersList();
+        log.info("🟩 список пользователей выдан: " + users);
+        return users;
     }
 
-    @PostMapping("/post-user")
-    public User postUser(User user) throws ValidationException {
+    @PostMapping
+    public User createUser(@RequestBody User newUser) throws ValidationException,
+            ValidationExceptionForResponse {
         try {
-            userManager.updateUser(user);
-            return user;
-        } catch (ValidationException exception) {
-            log.warn("пользователь не обновлён " + exception.getMessage());
-            throw new ValidationException("полььзователь не обновлен");
+            User createdUser = usersManager.createUser(newUser);
+            log.info("🟩 добавлен пользователь: " + createdUser);
+            return createdUser;
+
+        } catch (ValidationException e) {
+            log.info("🟩 пользователь НЕ добавлен");
+            log.warn("🟥" + e.getMessage());
+            System.out.println("⬛️" + e.getMessage());
+            throw new ValidationExceptionForResponse();
         }
     }
 
-    @PutMapping("/put-user")
-    public User putUser(User user) throws ValidationException {
+    @PutMapping
+    public User updateUser(@RequestBody User updatedUser) throws ValidationException, ValidationExceptionForResponse {
         try {
-            userManager.createUser(user);
-            return user;
-        } catch (ValidationException exception) {
-            log.warn("Пользователь не добавлен " + exception.getMessage());
-            throw new ValidationException("Пользователь не добавлен");
+            User currentUser = usersManager.updateUser(updatedUser);
+            log.info("🟩 пользователь обновлен: " + currentUser);
+            return currentUser;
+        } catch (ValidationException e) {
+            log.info("🟩 пользователь НЕ обновлен");
+            log.warn("🟥" + e.getMessage());
+            System.out.println("⬛️" + e.getMessage());
+            throw new ValidationExceptionForResponse();
         }
     }
-
-    // СОЗДАНИЕ ПОЛЬЗОВАТЕЛЯ
-    // ОБНОВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ
-    // ПОЛУЧЕНИЕ СПИСКА ВСЕХ ПОЛЬЗОВАТЕЛЕЙ
 }
