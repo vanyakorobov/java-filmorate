@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/post-user")
-    public User postUser(User user) throws ValidationException{
+    public User postUser(User user) throws ValidationException {
         try {
             userManager.updateUser(user);
             return user;
