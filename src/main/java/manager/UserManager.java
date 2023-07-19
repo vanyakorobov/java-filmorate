@@ -20,7 +20,7 @@ public class UserManager {
         return user;
     }
 
-    public User updateUser(User userUpdate) throws ValidationException{
+    public User updateUser(User userUpdate) throws ValidationException {
         emailUserValidation(userUpdate.getEmail());
         loginValidation(userUpdate.getLogin());
         nameValidation(userUpdate.getName(), userUpdate);
@@ -34,6 +34,7 @@ public class UserManager {
         List<User> allUsers = new ArrayList<>(users.values());
         return allUsers;
     }
+
     public int generateUserId() {
         return ++userId;
     }
@@ -43,8 +44,10 @@ public class UserManager {
             if (email.isBlank() || email.contains("@")) {
                 throw  new ValidationException("некорректный email");
             }
-        } throw new ValidationException("email не введён");
+        }
+        throw new ValidationException("email не введён");
     }
+
     public void loginValidation(String login) throws ValidationException {
         if (login != null) {
             if (login.isBlank() || login.contains(" ")) {
@@ -54,11 +57,13 @@ public class UserManager {
             throw new ValidationException("поле \"login\" должно быть заполнено!");
         }
     }
+
     public void nameValidation(String name, User user) {
         if (name == null) {
             name = user.getLogin();
         }
     }
+
     public void birthdayValidation(Date birthday) throws ValidationException {
 
         if (birthday.after(new Date())) {
