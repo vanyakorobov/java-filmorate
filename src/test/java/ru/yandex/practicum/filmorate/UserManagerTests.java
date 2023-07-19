@@ -47,6 +47,7 @@ UserManager userManager = new UserManager();
         assertEquals("userLogin", createdUser.getName());
         assertEquals(1, users.size(), "размер мапы != 1");
     }
+
     @Test
     void doNotCreateUserWithIncorrectBirthday() {
         Date date = new Date(3021, 6, 7);
