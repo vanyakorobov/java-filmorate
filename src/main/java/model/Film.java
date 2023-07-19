@@ -54,6 +54,7 @@ public class Film {
     public static class FilmBuilder {
 
         private final Film film;
+
         public FilmBuilder() {
             film = new Film();
         }
