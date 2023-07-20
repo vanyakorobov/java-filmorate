@@ -4,7 +4,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.exception.ValidationExceptionForResponse;
 import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.manager.FilmsManager;
-import ru.yandex.practicum.filmorate.manager.Managers;
+
 import ru.yandex.practicum.filmorate.model.Film;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/films")
 @Slf4j
 public class FilmController {
-    private FilmsManager filmsManager = Managers.getDefaultFilmsManager();
+    private FilmsManager filmsManager = new FilmsManager();
 
     @GetMapping
     public List<Film> getFilmsList() {
@@ -30,9 +30,7 @@ public class FilmController {
             log.info("🟩 добавлен фильм: " + createdFilm);
             return createdFilm;
         } catch (ValidationException e) {
-            log.info("🟩 фильм НЕ добавлен");
-            log.warn("🟥" + e.getMessage());
-            System.out.println("⬛️" + e.getMessage());
+            log.warn("🟥 фильм НЕ добавлен " + e.getMessage());
             throw new ValidationExceptionForResponse();
         }
     }

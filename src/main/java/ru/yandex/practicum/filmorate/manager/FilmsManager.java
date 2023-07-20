@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.manager;
 
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import lombok.Data;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
@@ -11,9 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 
-@Data
 public class FilmsManager {
-    int currentID;
+    private int currentID;
 
     private Map<Integer, Film> films = new HashMap();
 
@@ -43,17 +41,15 @@ public class FilmsManager {
         return updatedFilm;
     }
 
-    public void nameValidation(String name) throws ValidationException {
-        if (name != null) {
-            if (name.isBlank()) {
+    private void nameValidation(String name) throws ValidationException {
+        if (name != null || name.isBlank()) {
                 throw new ValidationException("поле \"name\" должно быть заполнено!");
-            }
         } else {
             throw new ValidationException("поле \"name\" должно быть заполнено!");
         }
     }
 
-    public void descriptionValidation(String description) {
+    private void descriptionValidation(String description) {
         if (description != null) {
             if (description.isBlank()) {
                 throw new ValidationException("некорректный description");
@@ -64,7 +60,7 @@ public class FilmsManager {
         }
     }
 
-    public void releaseDateValidation(LocalDate releaseDate) {
+    private void releaseDateValidation(LocalDate releaseDate) {
         if (releaseDate != null) {
             if (releaseDate.isBefore(LocalDate.of(1895, 12, 28))) {
                 throw new ValidationException("\"releaseDate\" не может быть раньше, чем 1895/12/28");
@@ -74,7 +70,7 @@ public class FilmsManager {
         }
     }
 
-    public void durationValidation(double duration) {
+    private void durationValidation(double duration) {
         if (duration < 0.1) {
             throw new ValidationException("поле \"duration\" не может быть отрицательным или равно нулю!");
         }

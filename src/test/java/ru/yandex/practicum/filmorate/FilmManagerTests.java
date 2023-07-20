@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate;
 
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.manager.FilmsManager;
-import ru.yandex.practicum.filmorate.manager.Managers;
 import ru.yandex.practicum.filmorate.model.Film;
 import org.junit.jupiter.api.*;
 import java.time.LocalDate;
@@ -13,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("FilmManagerTests должен ")
 public class FilmManagerTests {
-    FilmsManager filmsManager;
-    Map<Integer, Film> films;
+    private FilmsManager filmsManager;
+    private Map<Integer, Film> films;
 
     @BeforeEach
     public void createUserManager() {
-        filmsManager = Managers.getDefaultFilmsManager();
+        filmsManager = new FilmsManager();
         films = filmsManager.getFilms();
     }
 

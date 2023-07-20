@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate;
 
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.manager.Managers;
 import ru.yandex.practicum.filmorate.manager.UsersManager;
 import ru.yandex.practicum.filmorate.model.User;
 import org.junit.jupiter.api.*;
@@ -19,7 +18,7 @@ class UserManagerTests {
 
     @BeforeEach
     public void createUserManager() {
-        usersManager = Managers.getDefaultUsersManager();
+        usersManager = new UsersManager();
         users = usersManager.getUsers();
     }
 
