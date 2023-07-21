@@ -5,6 +5,7 @@ import ru.yandex.practicum.filmorate.manager.FilmsManager;
 import ru.yandex.practicum.filmorate.model.Film;
 import org.junit.jupiter.api.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,18 +14,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisplayName("FilmManagerTests должен ")
 public class FilmManagerTests {
     private FilmsManager filmsManager;
-    private Map<Integer, Film> films;
+    private List<Film> films;
 
     @BeforeEach
     public void createUserManager() {
         filmsManager = new FilmsManager();
-        films = filmsManager.getFilms();
-    }
-
-    @AfterEach
-    public void clearFilmManager() {
-        films.clear();
-        filmsManager.setCurrentID(0);
+        films = filmsManager.getFilmsList();
     }
 
     @DisplayName("создать фильм")

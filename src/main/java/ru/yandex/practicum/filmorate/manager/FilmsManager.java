@@ -42,32 +42,25 @@ public class FilmsManager {
     }
 
     private void nameValidation(String name) throws ValidationException {
-        if (name != null || name.isBlank()) {
+        if (name == null || name.isBlank()) {
                 throw new ValidationException("поле \"name\" должно быть заполнено!");
-        } else {
-            throw new ValidationException("поле \"name\" должно быть заполнено!");
         }
     }
 
     private void descriptionValidation(String description) {
-        if (description != null) {
-            if (description.isBlank()) {
+            if (description == null || description.isBlank()) {
                 throw new ValidationException("некорректный description");
             }
             if (description.length() > 200) {
                 throw new ValidationException("длина description больше 200 символов!");
             }
-        }
+
     }
 
     private void releaseDateValidation(LocalDate releaseDate) {
-        if (releaseDate != null) {
-            if (releaseDate.isBefore(LocalDate.of(1895, 12, 28))) {
-                throw new ValidationException("\"releaseDate\" не может быть раньше, чем 1895/12/28");
+            if (releaseDate == null || releaseDate.isBefore(LocalDate.of(1895, 12, 28))) {
+                throw new ValidationException("\"releaseDate\" не может быть пустым или раньше, чем 1895/12/28");
             }
-        } else {
-            throw new ValidationException("поле \"releaseDate\" должно быть заполнено!");
-        }
     }
 
     private void durationValidation(double duration) {
