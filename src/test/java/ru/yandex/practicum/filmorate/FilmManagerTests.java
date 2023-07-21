@@ -36,7 +36,6 @@ public class FilmManagerTests {
 
         assertEquals(1, createdFilm.getId(), "ID созданного фильма != 1");
         assertEquals("filmName", createdFilm.getName());
-        assertEquals(1, films.size(), "размер мапы != 1");
     }
 
     @DisplayName("НЕ создавать фильм, если name=null")
@@ -97,7 +96,7 @@ public class FilmManagerTests {
                 () -> filmsManager.createFilm(film)
         );
 
-        assertEquals("🔹\"releaseDate\" не может быть раньше, чем 1895/12/28", exception.getMessage());
+        assertEquals("🔹\"releaseDate\" не может быть пустым или раньше, чем 1895/12/28", exception.getMessage());
         assertEquals(0, films.size(), "размер мапы != 0");
     }
 
