@@ -6,7 +6,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import org.junit.jupiter.api.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
