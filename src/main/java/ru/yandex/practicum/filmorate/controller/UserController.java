@@ -18,7 +18,7 @@ public class UserController {
     @GetMapping
     public List<User> getUsersList() {
         List<User> users = usersManager.getUsersList();
-        log.info("🟩 список пользователей выдан: " + users);
+        log.info("выдан список пользователей" + users);
         return users;
     }
 
@@ -27,12 +27,12 @@ public class UserController {
             ValidationExceptionForResponse {
         try {
             User createdUser = usersManager.createUser(newUser);
-            log.info("🟩 добавлен пользователь: " + createdUser);
+            log.info("добавлен пользователь" + createdUser);
             return createdUser;
 
         } catch (ValidationException e) {
-            log.info("🟩 пользователь НЕ добавлен");
-            log.warn("🟥" + e.getMessage());
+            log.info("пользователь не добавлен");
+            log.warn(e.getMessage());
             System.out.println("⬛️" + e.getMessage());
             throw new ValidationExceptionForResponse();
         }
@@ -42,11 +42,11 @@ public class UserController {
     public User updateUser(@RequestBody User updatedUser) throws ValidationException, ValidationExceptionForResponse {
         try {
             User currentUser = usersManager.updateUser(updatedUser);
-            log.info("🟩 пользователь обновлен: " + currentUser);
+            log.info("пользователь обновлен " + currentUser);
             return currentUser;
         } catch (ValidationException e) {
-            log.info("🟩 пользователь НЕ обновлен");
-            log.warn("🟥" + e.getMessage());
+            log.info("пользователь не обновлен");
+            log.warn(e.getMessage());
             System.out.println("⬛️" + e.getMessage());
             throw new ValidationExceptionForResponse();
         }
