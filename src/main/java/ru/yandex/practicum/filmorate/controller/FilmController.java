@@ -44,7 +44,7 @@ public class FilmController {
         } catch (ValidationException e) {
             log.info("фильм не обновлён");
             log.warn(e.getMessage());
-            System.out.println("⬛️" + e.getMessage());
+            System.out.println(e.getMessage());
             throw new ValidationExceptionForResponse();
         }
     }
