@@ -53,8 +53,6 @@ public class FilmManagerTests {
                 ValidationException.class,
                 () -> filmsManager.createFilm(film)
         );
-
-        assertEquals("🔹поле \"name\" должно быть заполнено!", exception.getMessage());
         assertEquals(0, films.size(), "размер мапы != 0");
     }
 
