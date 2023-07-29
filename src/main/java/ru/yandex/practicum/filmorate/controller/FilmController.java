@@ -9,17 +9,16 @@ import ru.yandex.practicum.filmorate.model.Film;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/films")
-@Slf4j
 public class FilmController {
     private FilmsManager filmsManager = new FilmsManager();
 
     @GetMapping
     public List<Film> getFilmsList() {
         List<Film> films = filmsManager.getFilmsList();
-        log.info("🟩 список фильмов выдан: " + films);
+        log.info("выдан список фильмов: " + films);
         return films;
     }
 
@@ -27,10 +26,10 @@ public class FilmController {
     public Film createUser(@RequestBody Film newFilm) throws ValidationException, ValidationExceptionForResponse {
         try {
             Film createdFilm = filmsManager.createFilm(newFilm);
-            log.info("🟩 добавлен фильм: " + createdFilm);
+            log.info("фильм добавлен: " + createdFilm);
             return createdFilm;
         } catch (ValidationException e) {
-            log.warn("🟥 фильм НЕ добавлен " + e.getMessage());
+            log.warn("фильм не добавлен" + e.getMessage());
             throw new ValidationExceptionForResponse();
         }
     }
@@ -39,12 +38,12 @@ public class FilmController {
     public Film updateFilm(@RequestBody Film updatedFilm) throws ValidationException, ValidationExceptionForResponse {
         try {
             Film currentFilm = filmsManager.updateFilm(updatedFilm);
-            log.info("🟩 фильм обновлен: " + currentFilm);
+            log.info("обновлён фильм: " + currentFilm);
             return currentFilm;
         } catch (ValidationException e) {
-            log.info("🟩 фильм НЕ обновлен");
-            log.warn("🟥" + e.getMessage());
-            System.out.println("⬛️" + e.getMessage());
+            log.info("фильм не обновлён");
+            log.warn(e.getMessage());
+            System.out.println(e.getMessage());
             throw new ValidationExceptionForResponse();
         }
     }
