@@ -19,7 +19,7 @@ public class FilmController {
     @GetMapping
     public List<Film> getFilmsList() {
         List<Film> films = filmsManager.getFilmsList();
-        log.info("🟩 список фильмов выдан: " + films);
+        log.info("выдан список фильмов" + films);
         return films;
     }
 

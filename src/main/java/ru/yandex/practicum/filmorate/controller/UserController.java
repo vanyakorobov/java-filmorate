@@ -33,7 +33,7 @@ public class UserController {
         } catch (ValidationException e) {
             log.info("пользователь не добавлен");
             log.warn(e.getMessage());
-            System.out.println("⬛️" + e.getMessage());
+            System.out.println(e.getMessage());
             throw new ValidationExceptionForResponse();
         }
     }
@@ -47,7 +47,7 @@ public class UserController {
         } catch (ValidationException e) {
             log.info("пользователь не обновлен");
             log.warn(e.getMessage());
-            System.out.println("⬛️" + e.getMessage());
+            System.out.println(e.getMessage());
             throw new ValidationExceptionForResponse();
         }
     }
