@@ -28,7 +28,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/{id}/friends")
     public List<User> getUsersList() {
         List<User> users = inMemoryUserStorage.getUsersList();
         log.info("список пользователей выдан: " + users);
@@ -70,16 +70,16 @@ public class UserController {
         }
     }
 
-    @PutMapping("{userId}")
-    public int addInFriends(@PathVariable int userId) {
-        userService.addFriend(userId);
-        return userId;
+    @PutMapping("/{id}/friends/{friendId}")
+    public int addInFriends(@PathVariable int friendId) {
+        userService.addFriend(friendId);
+        return friendId;
     }
 
-    @DeleteMapping("{userId}")
-    public int deleteInFriends(@PathVariable int userId) {
-        userService.removeFriend(userId);
-        return userId;
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public int deleteInFriends(@PathVariable int friendId) {
+        userService.removeFriend(friendId);
+        return friendId;
     }
 
 
