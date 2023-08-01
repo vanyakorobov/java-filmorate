@@ -9,7 +9,6 @@ import java.util.Set;
 
 @Data
 @Builder
-@Component
 public class User {
     private String email;
     private int id;

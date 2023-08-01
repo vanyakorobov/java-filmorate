@@ -22,11 +22,9 @@ import java.util.Set;
 public class UserController {
     private InMemoryUserStorage inMemoryUserStorage;
     private UserService userService;
-    private User user;
 
     @Autowired
-    public void userService(User user, InMemoryUserStorage inMemoryUserStorage, UserService userService) {
-        this.user = user;
+    public void userService(InMemoryUserStorage inMemoryUserStorage, UserService userService) {
         this.inMemoryUserStorage = inMemoryUserStorage;
         this.userService = userService;
     }
@@ -85,10 +83,6 @@ public class UserController {
         return userId;
     }
 
-    @GetMapping("{id}")
-    public Set<Integer> myFriends() {
-        return user.getFriends();
-    }
 
     @GetMapping("{id}")
     public List<User> getCommonFriends(@PathVariable int id) {
