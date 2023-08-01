@@ -63,7 +63,7 @@ class UserManagerTests {
                 () -> inMemoryUserStorage.createUser(user)
         );
 
-        assertEquals("🔹некорректный email! ваш email: someyandex.ru", exception.getMessage());
+        assertEquals("некорректный email! ваш email: someyandex.ru", exception.getMessage());
         assertEquals(0, users.size(), "размер мапы != 0");
     }
 
@@ -84,7 +84,7 @@ class UserManagerTests {
                 () -> inMemoryUserStorage.createUser(user)
         );
 
-        assertEquals("🔹некорректный login", exception.getMessage());
+        assertEquals("некорректный login", exception.getMessage());
         assertEquals(0, users.size(), "размер мапы != 0");
     }
 

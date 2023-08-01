@@ -74,7 +74,7 @@ public class FilmManagerTests {
                 () -> inMemoryFilmStorage.createFilm(film)
         );
 
-        assertEquals("🔹длина description больше 200 символов!", exception.getMessage());
+        assertEquals("длина description больше 200 символов!", exception.getMessage());
         assertEquals(0, films.size(), "размер мапы != 0");
     }
 
@@ -95,7 +95,7 @@ public class FilmManagerTests {
                 () -> inMemoryFilmStorage.createFilm(film)
         );
 
-        assertEquals("🔹\"releaseDate\" не может быть пустым или раньше, чем 1895/12/28", exception.getMessage());
+        assertEquals("\"releaseDate\" не может быть пустым или раньше, чем 1895/12/28", exception.getMessage());
         assertEquals(0, films.size(), "размер мапы != 0");
     }
 
