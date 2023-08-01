@@ -84,8 +84,8 @@ public class UserController {
 
 
     @GetMapping("{id}")
-    public List<User> getCommonFriends(@PathVariable int id) {
-        return userService.getCommonFriends(id);
+    public List<User> getCommonFriends(@PathVariable int id, int myId) {
+        return userService.getCommonFriends(id, myId);
     }
 
     @ExceptionHandler

@@ -11,31 +11,31 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private User user;
     InMemoryUserStorage inMemoryUserStorage;
 
     @Autowired
-    public void userService(User user, InMemoryUserStorage inMemoryUserStorage) {
-        this.user = user;
+    public void userService(InMemoryUserStorage inMemoryUserStorage) {
         this.inMemoryUserStorage = inMemoryUserStorage;
     }
 
     public void addFriend(int id) {
-        user.getFriends().add(id);
+        User i = inMemoryUserStorage.getUserById(id);
         User friend = inMemoryUserStorage.getUserById(id);
-        friend.getFriends().add(user.getId());
+        friend.getFriends().add(i.getId());
     }
 
     public void removeFriend(int id) {
-        user.getFriends().remove(id);
+        User i = inMemoryUserStorage.getUserById(id);
+        i.getFriends().remove(id);
         User friend = inMemoryUserStorage.getUserById(id);
-        friend.getFriends().remove(user.getId());
+        friend.getFriends().remove(i.getId());
     }
 
-    public List<User> getCommonFriends(int friendId) {
+    public List<User> getCommonFriends(int friendId, int myId) {
         User friend = inMemoryUserStorage.getUserById(friendId);
+        User i = inMemoryUserStorage.getUserById(myId);
         List<User> commonFriends = new ArrayList<>();
-        for (int id : user.getFriends()) {
+        for (int id : i.getFriends()) {
             if (friend.getFriends().contains(id)) {
                 commonFriends.add(inMemoryUserStorage.getUserById(id));
             }

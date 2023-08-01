@@ -14,24 +14,24 @@ import java.util.List;
 public class FilmService {
 
     private InMemoryFilmStorage inMemoryFilmStorage;
-    private Film film;
 
     @Autowired
-    public void filmService(Film film, InMemoryFilmStorage inMemoryFilmStorage) {
-        this.film = film;
+    public void filmService(InMemoryFilmStorage inMemoryFilmStorage) {
         this.inMemoryFilmStorage = inMemoryFilmStorage;
     }
 
     public void addLike(int id) {
-        film.getLikes().add(id);
+        Film thisFilm = inMemoryFilmStorage.getFilmById(id);
+        thisFilm.getLikes().add(id);
         Film like = inMemoryFilmStorage.getFilmById(id);
-        like.getLikes().add(film.getId());
+        like.getLikes().add(thisFilm.getId());
     }
 
     public void removeLike(int id) {
-        film.getLikes().remove(id);
+        Film thisFilm = inMemoryFilmStorage.getFilmById(id);
+        thisFilm.getLikes().remove(id);
         Film like = inMemoryFilmStorage.getFilmById(id);
-        like.getLikes().remove(film.getId());
+        like.getLikes().remove(thisFilm.getId());
     }
 
     public List<Film> getTopLikedFilms() {
