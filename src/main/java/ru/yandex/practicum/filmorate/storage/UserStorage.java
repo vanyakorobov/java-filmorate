@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface UserStorage {
     User createUser(User newUser);
+
     User updateUser(User updatedUser);
 
     void emailValidation(String email);
