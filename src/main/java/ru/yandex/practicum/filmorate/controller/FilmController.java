@@ -27,7 +27,6 @@ public class FilmController {
 
     @GetMapping()
     public List<Film> getFilmsList() {
- add-friends-likes
         List<Film> films = inMemoryFilmStorage.getFilmsList();
         log.info("выдан список фильмов: " + films);
 
@@ -47,9 +46,7 @@ public class FilmController {
     @PostMapping
     public Film createUser(@RequestBody Film newFilm) throws ValidationException, ValidationExceptionForResponse {
         try {
- add-friends-likes
             Film createdFilm = inMemoryFilmStorage.createFilm(newFilm);
- main
             log.info("фильм добавлен: " + createdFilm);
             return createdFilm;
         } catch (ValidationException e) {
@@ -61,10 +58,8 @@ public class FilmController {
     @PutMapping
     public Film updateFilm(@RequestBody Film updatedFilm) throws ValidationException, ValidationExceptionForResponse {
         try {
- add-friends-likes
             Film currentFilm = inMemoryFilmStorage.updateFilm(updatedFilm);
             log.info("обновлён фильм: " + currentFilm);
- main
             return currentFilm;
         } catch (ValidationException e) {
             log.info("фильм не обновлён");

@@ -33,10 +33,8 @@ public class UserController {
 
     @GetMapping
     public List<User> getUsersList() {
- add-friends-likes
         List<User> users = inMemoryUserStorage.getUsersList();
         log.info("список пользователей выдан: " + users);
- main
         return users;
     }
 
@@ -49,10 +47,8 @@ public class UserController {
     public User createUser(@RequestBody User newUser) throws ValidationException,
             ValidationExceptionForResponse {
         try {
- add-friends-likes
             User createdUser = inMemoryUserStorage.createUser(newUser);
             log.info("добавлен пользователь: " + createdUser);
- main
             return createdUser;
 
         } catch (ValidationException e) {
@@ -66,13 +62,11 @@ public class UserController {
     @PutMapping
     public User updateUser(@RequestBody User updatedUser) throws ValidationException, ValidationExceptionForResponse {
         try {
- add-friends-likes
             User currentUser = inMemoryUserStorage.updateUser(updatedUser);
             log.info("пользователь обновлен: " + currentUser);
             return currentUser;
         } catch (ValidationException e) {
             log.info("пользователь НЕ обновлен");
- main
             log.warn(e.getMessage());
             System.out.println(e.getMessage());
             throw new ValidationExceptionForResponse();
