@@ -20,10 +20,8 @@ public class InMemoryFilmStorage implements FilmStorage {
         descriptionValidation(newFilm.getDescription());
         releaseDateValidation(newFilm.getReleaseDate());
         durationValidation(newFilm.getDuration());
-
         newFilm.setId(createID());
         films.put(newFilm.getId(), newFilm);
-
         return newFilm;
     }
 

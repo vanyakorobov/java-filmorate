@@ -21,11 +21,9 @@ public class InMemoryUserStorage implements UserStorage {
     public User createUser(User newUser) throws ValidationException {
         emailValidation(newUser.getEmail());
         birthdayValidation(newUser.getBirthday());
-
         String userLogin = newUser.getLogin();
         loginValidation(userLogin);
         chooseLoginOrName(newUser, newUser.getName(), userLogin);
-
         newUser.setId(createID());
         users.put(newUser.getId(), newUser);
         return newUser;
@@ -36,16 +34,13 @@ public class InMemoryUserStorage implements UserStorage {
         if (!users.containsKey(id)) {
             throw new ValidationException("пользователь с id: " + id + " не существует!");
         }
-
         String updatedEmail = updatedUser.getEmail();
         emailValidation(updatedEmail);
         LocalDate updatedBirthday = updatedUser.getBirthday();
         birthdayValidation(updatedBirthday);
-
         String updatedLogin = updatedUser.getLogin();
         loginValidation(updatedLogin);
         chooseLoginOrName(updatedUser, updatedUser.getName(), updatedLogin);
-
         users.put(id, updatedUser);
         return updatedUser;
     }
