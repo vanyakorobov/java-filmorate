@@ -1,9 +1,9 @@
 package ru.yandex.practicum.filmorate;
 
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.manager.UsersManager;
 import ru.yandex.practicum.filmorate.model.User;
 import org.junit.jupiter.api.*;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -13,19 +13,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("UserManagerTests должен ")
 class UserManagerTests {
-    UsersManager usersManager;
+    InMemoryUserStorage inMemoryUserStorage;
     Map<Integer, User> users;
 
     @BeforeEach
     public void createUserManager() {
-        usersManager = new UsersManager();
-        users = usersManager.getUsers();
+        inMemoryUserStorage = new InMemoryUserStorage();
+        users = inMemoryUserStorage.getUsers();
     }
 
     @AfterEach
     public void clearUserManager() {
         users.clear();
-        usersManager.setCurrentID(0);
+        inMemoryUserStorage.setCurrentID(0);
     }
 
     @DisplayName("создать пользователя")
@@ -39,7 +39,7 @@ class UserManagerTests {
                 .name("userName")
                 .birthday(birthday)
                 .build();
-        User createdUser = usersManager.createUser(user);
+        User createdUser = inMemoryUserStorage.createUser(user);
 
         assertEquals(1, createdUser.getId(), "ID созданного пользователя != 1");
         assertEquals("some@yandex.ru", createdUser.getEmail());
@@ -60,7 +60,7 @@ class UserManagerTests {
 
         final ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> usersManager.createUser(user)
+                () -> inMemoryUserStorage.createUser(user)
         );
 
         assertEquals("🔹некорректный email! ваш email: someyandex.ru", exception.getMessage());
@@ -81,7 +81,7 @@ class UserManagerTests {
 
         final ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> usersManager.createUser(user)
+                () -> inMemoryUserStorage.createUser(user)
         );
 
         assertEquals("🔹некорректный login", exception.getMessage());
@@ -98,7 +98,7 @@ class UserManagerTests {
                 .login("userLogin")
                 .birthday(birthday)
                 .build();
-        User createdUser = usersManager.createUser(user);
+        User createdUser = inMemoryUserStorage.createUser(user);
 
         assertEquals(1, createdUser.getId(), "ID созданного пользователя != 1");
         assertEquals("userLogin", createdUser.getName());
@@ -119,10 +119,10 @@ class UserManagerTests {
 
         final ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> usersManager.createUser(user)
+                () -> inMemoryUserStorage.createUser(user)
         );
 
-        assertEquals("🔹birthday не может быть в будущем", exception.getMessage());
+        assertEquals("birthday не может быть в будущем", exception.getMessage());
         assertEquals(0, users.size(), "размер мапы != 0");
     }
 }

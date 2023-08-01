@@ -1,9 +1,10 @@
 package ru.yandex.practicum.filmorate;
 
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.manager.FilmsManager;
 import ru.yandex.practicum.filmorate.model.Film;
 import org.junit.jupiter.api.*;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,13 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("FilmManagerTests должен ")
 public class FilmManagerTests {
-    private FilmsManager filmsManager;
+    private InMemoryFilmStorage inMemoryFilmStorage;
     private List<Film> films;
 
     @BeforeEach
     public void createUserManager() {
-        filmsManager = new FilmsManager();
-        films = filmsManager.getFilmsList();
+        inMemoryFilmStorage = new InMemoryFilmStorage();
+        films = inMemoryFilmStorage.getFilmsList();
     }
 
     @DisplayName("создать фильм")
@@ -32,7 +33,7 @@ public class FilmManagerTests {
                 .releaseDate(releaseDate)
                 .duration(120)
                 .build();
-        Film createdFilm = filmsManager.createFilm(film);
+        Film createdFilm = inMemoryFilmStorage.createFilm(film);
 
         assertEquals(1, createdFilm.getId(), "ID созданного фильма != 1");
         assertEquals("filmName", createdFilm.getName());
@@ -51,7 +52,7 @@ public class FilmManagerTests {
 
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> filmsManager.createFilm(film)
+                () -> inMemoryFilmStorage.createFilm(film)
         );
         assertEquals(0, films.size(), "размер мапы != 0");
     }
@@ -70,7 +71,7 @@ public class FilmManagerTests {
 
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> filmsManager.createFilm(film)
+                () -> inMemoryFilmStorage.createFilm(film)
         );
 
         assertEquals("🔹длина description больше 200 символов!", exception.getMessage());
@@ -91,7 +92,7 @@ public class FilmManagerTests {
 
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> filmsManager.createFilm(film)
+                () -> inMemoryFilmStorage.createFilm(film)
         );
 
         assertEquals("🔹\"releaseDate\" не может быть пустым или раньше, чем 1895/12/28", exception.getMessage());
@@ -112,10 +113,10 @@ public class FilmManagerTests {
 
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> filmsManager.createFilm(film)
+                () -> inMemoryFilmStorage.createFilm(film)
         );
 
-        assertEquals("🔹поле \"duration\" не может быть отрицательным или равно нулю!", exception.getMessage());
+        assertEquals("поле \"duration\" не может быть отрицательным или равно нулю!", exception.getMessage());
         assertEquals(0, films.size(), "размер мапы != 0");
     }
 }
