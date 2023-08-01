@@ -8,11 +8,18 @@ import java.util.List;
 public interface UserStorage {
     User createUser(User newUser);
     User updateUser(User updatedUser);
+
     void emailValidation(String email);
+
     void loginValidation(String login);
+
     void birthdayValidation(LocalDate birthday);
+
     boolean nameValidationFailed(String name);
+
     List<User> getUsersList();
+
     void chooseLoginOrName(User user, String name, String login);
+
     int createID();
 }

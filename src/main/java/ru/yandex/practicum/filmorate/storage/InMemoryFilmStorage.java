@@ -39,13 +39,13 @@ public class InMemoryFilmStorage implements FilmStorage {
         return updatedFilm;
     }
 
-    private void nameValidation(String name) throws ValidationException {
+    public void nameValidation(String name) throws ValidationException {
         if (name == null || name.isBlank()) {
             throw new ValidationException("поле \"name\" должно быть заполнено!");
         }
     }
 
-    private void descriptionValidation(String description) {
+    public void descriptionValidation(String description) {
         if (description == null || description.isBlank()) {
             throw new ValidationException("некорректный description");
         }
@@ -55,13 +55,13 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     }
 
-    private void releaseDateValidation(LocalDate releaseDate) {
+    public void releaseDateValidation(LocalDate releaseDate) {
         if (releaseDate == null || releaseDate.isBefore(LocalDate.of(1895, 12, 28))) {
             throw new ValidationException("\"releaseDate\" не может быть пустым или раньше, чем 1895/12/28");
         }
     }
 
-    private void durationValidation(double duration) {
+    public void durationValidation(double duration) {
         if (duration < 0.1) {
             throw new ValidationException("поле \"duration\" не может быть отрицательным или равно нулю!");
         }
@@ -77,7 +77,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         return film;
     }
 
-    private int createID() {
+    public int createID() {
         return ++currentID;
     }
 }
