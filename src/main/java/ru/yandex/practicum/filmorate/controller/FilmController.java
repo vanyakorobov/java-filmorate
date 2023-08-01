@@ -20,6 +20,7 @@ public class FilmController {
 
     private InMemoryFilmStorage inMemoryFilmStorage;
     private FilmService filmService;
+
     public void filmService(FilmService filmService, InMemoryFilmStorage inMemoryFilmStorage) {
         this.filmService = filmService;
         this.inMemoryFilmStorage = inMemoryFilmStorage;
