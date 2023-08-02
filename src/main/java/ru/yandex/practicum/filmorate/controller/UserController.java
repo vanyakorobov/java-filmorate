@@ -28,14 +28,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{id}/friends")
-    public List<User> getUsersList(@PathVariable  int id) {
-        List<User> users = inMemoryUserStorage.getUsersList(id);
-        log.info("список пользователей выдан: " + users);
+    @GetMapping()
+    public List<User> getUsersList() {
+        List<User> users = inMemoryUserStorage.getUsersList();
+        log.info("Выдан список пользователей: " + users);
         return users;
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("/{userId}")
     public User getUserFromTheId(@PathVariable int userId) {
         return inMemoryUserStorage.getUserById(userId);
     }
