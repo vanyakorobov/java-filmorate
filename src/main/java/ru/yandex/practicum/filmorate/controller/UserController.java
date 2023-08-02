@@ -35,9 +35,9 @@ public class UserController {
         return users;
     }
 
-    @GetMapping("/{id}")
-    public User getUserFromTheId(@PathVariable int id) {
-        return inMemoryUserStorage.getUserById(id);
+    @GetMapping("/{userId}")
+    public User getUserFromTheId(@PathVariable int userId) {
+        return inMemoryUserStorage.getUserById(userId);
     }
 
     @PostMapping

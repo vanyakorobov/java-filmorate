@@ -93,8 +93,8 @@ public class InMemoryUserStorage implements UserStorage {
         return list;
     }
 
-    public User getUserById(int currentID) {
-        User user = users.get(currentID);
+    public User getUserById(int id) {
+        User user = users.get(id);
         return user;
     }
 
