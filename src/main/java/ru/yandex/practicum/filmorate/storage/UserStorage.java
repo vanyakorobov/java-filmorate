@@ -19,7 +19,7 @@ public interface UserStorage {
 
     boolean nameValidationFailed(String name);
 
-    List<User> getUsersList();
+    List<User> getUsersList(int id);
 
     void chooseLoginOrName(User user, String name, String login);
 

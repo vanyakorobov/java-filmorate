@@ -29,8 +29,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends")
-    public List<User> getUsersList() {
-        List<User> users = inMemoryUserStorage.getUsersList();
+    public List<User> getUsersList(@PathVariable  int id) {
+        List<User> users = inMemoryUserStorage.getUsersList(id);
         log.info("список пользователей выдан: " + users);
         return users;
     }
@@ -83,7 +83,7 @@ public class UserController {
     }
 
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public List<User> getCommonFriends(@PathVariable int id, int myId) {
         return userService.getCommonFriends(id, myId);
     }
