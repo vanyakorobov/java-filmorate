@@ -40,6 +40,11 @@ public class UserController {
         return inMemoryUserStorage.getUserById(userId);
     }
 
+    @GetMapping("/{id}/friends")
+    public List<User> getCommonFriends(@PathVariable int id, int myId) {
+        return userService.getCommonFriends(id, myId);
+    }
+
     @PostMapping
     public User createUser(@RequestBody User newUser) throws ValidationException,
             ValidationExceptionForResponse {
@@ -80,12 +85,6 @@ public class UserController {
     public int deleteInFriends(@PathVariable int friendId) {
         userService.removeFriend(friendId);
         return friendId;
-    }
-
-
-    @GetMapping("/{id}")
-    public List<User> getCommonFriends(@PathVariable int id, int myId) {
-        return userService.getCommonFriends(id, myId);
     }
 
     @ExceptionHandler
