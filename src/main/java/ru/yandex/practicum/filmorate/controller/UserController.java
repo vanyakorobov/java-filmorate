@@ -40,7 +40,7 @@ public class UserController {
         return inMemoryUserStorage.getUserById(userId);
     }
 
-    @GetMapping("/{id}/friends")
+    @GetMapping("/{id}/friends/common/{otherId}")
     public List<User> getCommonFriends(@PathVariable int id, int myId) {
         return userService.getCommonFriends(id, myId);
     }
