@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -22,6 +23,11 @@ public class UserService {
         User i = inMemoryUserStorage.getUserById(id);
         User friend = inMemoryUserStorage.getUserById(id);
         friend.getFriends().add(i.getId());
+    }
+
+    public Set<Integer> getFriends(int id) {
+        User i = inMemoryUserStorage.getUserById(id);
+        return i.getFriends();
     }
 
     public void removeFriend(int id) {
