@@ -25,9 +25,9 @@ public class UserService {
         friend.getFriends().add(i.getId());
     }
 
-    public Set<Integer> getFriends(int id) {
-        User i = inMemoryUserStorage.getUserById(id);
-        return i.getFriends();
+    public List<User> getFriends(int id) {
+        List<User> friends = (List<User>) inMemoryUserStorage.getUserById(id);
+        return friends;
     }
 
     public void removeFriend(int id) {
