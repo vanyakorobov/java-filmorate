@@ -24,8 +24,13 @@ public class UserService {
         friend.getFriends().add(i.getId());
     }
 
-    public List<User> getFriends(int id) {
-        List<User> friends = (List<User>) inMemoryUserStorage.getUserById(id);
+    public List<User> getFriendsList(int id) {
+        User user = inMemoryUserStorage.getUserById(id); // получаем Юзера, чьи друзья нужны
+        List<User> friends = new ArrayList<>();  // Создали новый список
+        for (Integer friendId : user.getFriends()) {
+            User friend = inMemoryUserStorage.getUserById(friendId); // Получаем друга по его id
+            friends.add(friend); // Добавляем друга в список
+        }
         return friends;
     }
 
