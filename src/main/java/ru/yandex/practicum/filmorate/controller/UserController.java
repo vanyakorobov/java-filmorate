@@ -81,8 +81,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public int addInFriends(@PathVariable int friendId) {
-        userService.addFriend(friendId);
+    public int addInFriends(@PathVariable int id, @PathVariable int friendId) {
+        userService.addFriend(id, friendId);
         return friendId;
     }
 
@@ -101,7 +101,7 @@ public class UserController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleNullId(final NullPointerException e) {
-        return Map.of("error", "Не передан id");
+        return Map.of("error", "Не передан id " + e.getMessage());
     }
 
     @ExceptionHandler

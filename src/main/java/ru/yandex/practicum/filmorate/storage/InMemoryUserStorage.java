@@ -32,7 +32,7 @@ public class InMemoryUserStorage implements UserStorage {
     public User updateUser(User updatedUser) throws ValidationException {
         int id = updatedUser.getId();
         if (!users.containsKey(id)) {
-            throw new ValidationException("пользователь с id: " + id + " не существует!");
+            throw new ValidationException("пользователь с id: " + id + " не существует");
         }
         String updatedEmail = updatedUser.getEmail();
         emailValidation(updatedEmail);
@@ -49,14 +49,14 @@ public class InMemoryUserStorage implements UserStorage {
         if (email != null) {
             for (User user : users.values()) {
                 if (user.getEmail().equals(email)) {
-                    throw new ValidationException("пользователь с таким email уже существует!");
+                    throw new ValidationException("пользователь с таким email уже существует");
                 }
             }
             if (email.isBlank() || !email.contains("@")) {
                 throw new ValidationException("некорректный email! ваш email: " + email);
             }
         } else {
-            throw new ValidationException("поле \"mail\" должно быть заполнено! ваш email: " + email);
+            throw new ValidationException("поле \"mail\" должно быть заполнено. Ваш email: " + email);
         }
     }
 
@@ -66,7 +66,7 @@ public class InMemoryUserStorage implements UserStorage {
                 throw new ValidationException("некорректный login");
             }
         } else {
-            throw new ValidationException("поле \"login\" должно быть заполнено!");
+            throw new ValidationException("поле \"login\" должно быть заполнено");
         }
     }
 
@@ -76,7 +76,7 @@ public class InMemoryUserStorage implements UserStorage {
                 throw new ValidationException("birthday не может быть в будущем");
             }
         } else {
-            throw new ValidationException("поле \"birthday\" должно быть заполнено!");
+            throw new ValidationException("поле \"birthday\" должно быть заполнено");
         }
     }
 
