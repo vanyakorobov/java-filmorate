@@ -32,7 +32,7 @@ public class InMemoryUserStorage implements UserStorage {
     public User updateUser(User updatedUser) throws ValidationException {
         int id = updatedUser.getId();
         if (!users.containsKey(id)) {
-            throw new ValidationException("пользователь с id: " + id + " не существует");
+            throw new ValidationException("пользователя с id = " + id + " не существует");
         }
         String updatedEmail = updatedUser.getEmail();
         emailValidation(updatedEmail);
@@ -40,6 +40,7 @@ public class InMemoryUserStorage implements UserStorage {
         birthdayValidation(updatedBirthday);
         String updatedLogin = updatedUser.getLogin();
         loginValidation(updatedLogin);
+        int newId = updatedUser.getId();
         chooseLoginOrName(updatedUser, updatedUser.getName(), updatedLogin);
         users.put(id, updatedUser);
         return updatedUser;
