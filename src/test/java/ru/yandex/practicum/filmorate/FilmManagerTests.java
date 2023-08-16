@@ -11,7 +11,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DisplayName("FilmManagerTests должен ")
 public class FilmManagerTests {
     private InMemoryFilmStorage inMemoryFilmStorage;
     private List<Film> films;
@@ -22,7 +21,6 @@ public class FilmManagerTests {
         films = inMemoryFilmStorage.getFilmsList();
     }
 
-    @DisplayName("создать фильм")
     @Test
     void createFilm() {
         LocalDate releaseDate = LocalDate.of(2021, 6, 7);
@@ -39,9 +37,8 @@ public class FilmManagerTests {
         assertEquals("filmName", createdFilm.getName());
     }
 
-    @DisplayName("НЕ создавать фильм, если name=null")
     @Test
-    void doNotCreateFilmWithIncorrectName() {
+    void correctName() {
         LocalDate releaseDate = LocalDate.of(2021, 6, 7);
         Film film = Film.builder()
                 .id(0)
@@ -57,9 +54,8 @@ public class FilmManagerTests {
         assertEquals(0, films.size(), "размер мапы != 0");
     }
 
-    @DisplayName("НЕ создавать фильм, если description.length()>200")
     @Test
-    void doNotCreateFilmWithIncorrectDescription() {
+    void correctDescription() {
         LocalDate releaseDate = LocalDate.of(2021, 6, 7);
         Film film = Film.builder()
                 .id(0)
@@ -78,9 +74,8 @@ public class FilmManagerTests {
         assertEquals(0, films.size(), "размер мапы != 0");
     }
 
-    @DisplayName("НЕ создавать фильм, если releaseDate раньше, чем 1885/12/28")
     @Test
-    void doNotCreateFilmWithIncorrectReleaseDate() {
+    void correctReleaseDate() {
         LocalDate releaseDate = LocalDate.of(1884, 6, 7);
         Film film = Film.builder()
                 .id(0)
@@ -99,9 +94,8 @@ public class FilmManagerTests {
         assertEquals(0, films.size(), "размер мапы != 0");
     }
 
-    @DisplayName("НЕ создавать фильм, если duration<0")
     @Test
-    void doNotCreateFilmWithIncorrectDuration() {
+    void correctDuration() {
         LocalDate releaseDate = LocalDate.of(1984, 6, 7);
         Film film = Film.builder()
                 .id(0)

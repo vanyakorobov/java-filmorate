@@ -23,12 +23,8 @@ public class UserService {
     public void addFriend(int id, int friendId) {
         User i = inMemoryUserStorage.getUserById(id);
         User friend = inMemoryUserStorage.getUserById(friendId);
-        Set<Integer> myFriends = i.getFriends();
-        myFriends = new HashSet<>();
-        myFriends.add(i.getId());
-        Set<Integer> friendsOfFriends = friend.getFriends();
-        friendsOfFriends = new HashSet<>();
-        friendsOfFriends.add(friend.getId());
+        i.getFriends().add(friend.getId());
+        friend.getFriends().add(i.getId());
     }
 
     public List<User> getFriendsList(int id) {

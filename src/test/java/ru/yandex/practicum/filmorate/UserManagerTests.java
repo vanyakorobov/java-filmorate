@@ -11,7 +11,6 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DisplayName("UserManagerTests должен ")
 class UserManagerTests {
     InMemoryUserStorage inMemoryUserStorage;
     Map<Integer, User> users;
@@ -28,7 +27,6 @@ class UserManagerTests {
         inMemoryUserStorage.setCurrentID(0);
     }
 
-    @DisplayName("создать пользователя")
     @Test
     void createUser() {
         LocalDate birthday = LocalDate.of(2021, 6, 7);
@@ -46,9 +44,8 @@ class UserManagerTests {
         assertEquals(1, users.size(), "размер мапы != 1");
     }
 
-    @DisplayName("НЕ создавать пользователя, если некорректный email")
     @Test
-    void doNotCreateUserWithIncorrectEmail() {
+    void correctEmail() {
         LocalDate birthday = LocalDate.of(2021, 6, 7);
         User user = User.builder()
                 .id(0)
@@ -67,9 +64,8 @@ class UserManagerTests {
         assertEquals(0, users.size(), "размер мапы != 0");
     }
 
-    @DisplayName("НЕ создавать пользователя, если некорректный login")
     @Test
-    void doNotCreateUserWithIncorrectLogin() {
+    void correctLogin() {
         LocalDate birthday = LocalDate.of(2021, 6, 7);
         User user = User.builder()
                 .id(0)
@@ -88,9 +84,8 @@ class UserManagerTests {
         assertEquals(0, users.size(), "размер мапы != 0");
     }
 
-    @DisplayName("создать пользователя, если name=null")
     @Test
-    void createUserWithIncorrectName() {
+    void correctName() {
         LocalDate birthday = LocalDate.of(2021, 6, 7);
         User user = User.builder()
                 .id(0)
@@ -105,9 +100,8 @@ class UserManagerTests {
         assertEquals(1, users.size(), "размер мапы != 1");
     }
 
-    @DisplayName("НЕ создавать пользователя, если birthday в будущем")
     @Test
-    void doNotCreateUserWithIncorrectBirthday() {
+    void correctBirthday() {
         LocalDate birthday = LocalDate.of(3021, 6, 7);
         User user = User.builder()
                 .id(0)
