@@ -9,7 +9,7 @@ public interface UserStorage {
 
     User createUser(User newUser);
 
-    User updateUser(User updatedUser);
+    User updateUser(User updatedUser, int id);
 
     void emailValidation(String email);
 

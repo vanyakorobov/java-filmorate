@@ -66,10 +66,10 @@ public class UserController {
         }
     }
 
-    @PutMapping
-    public User updateUser(@RequestBody User updatedUser) throws ValidationException, ValidationExceptionForResponse {
+    @PutMapping("/{id}")
+    public User updateUser(@RequestBody User updatedUser, @PathVariable int id) throws ValidationException, ValidationExceptionForResponse {
         try {
-            User currentUser = inMemoryUserStorage.updateUser(updatedUser);
+            User currentUser = inMemoryUserStorage.updateUser(updatedUser, id);
             log.info("пользователь обновлен: " + currentUser);
             return currentUser;
         } catch (ValidationException e) {
