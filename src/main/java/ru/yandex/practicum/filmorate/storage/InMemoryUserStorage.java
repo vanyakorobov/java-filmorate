@@ -29,20 +29,9 @@ public class InMemoryUserStorage implements UserStorage {
         return newUser;
     }
 
-    public User updateUser(User updatedUser, int id) throws ValidationException {
-        User user = getUserById(id);
-        if (!users.containsKey(id)) {
-            throw new ValidationException("пользователя с id = " + id + " не существует");
-        }
-        user.setEmail(updatedUser.getEmail());
-        emailValidation(updatedUser.getEmail());
-        user.setBirthday(updatedUser.getBirthday());
-        birthdayValidation(updatedUser.getBirthday());
-        user.setLogin(updatedUser.getLogin());
-        loginValidation(updatedUser.getLogin());
-        int newId = updatedUser.getId();
-        chooseLoginOrName(updatedUser, updatedUser.getName(), updatedUser.getLogin());
-        users.put(newId, updatedUser);
+    public User updateUser(User updatedUser) throws ValidationException {
+        int id = updatedUser.getId();
+        users.put(id, updatedUser);
         return updatedUser;
     }
 
