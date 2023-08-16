@@ -42,7 +42,7 @@ public class InMemoryUserStorage implements UserStorage {
         loginValidation(updatedLogin);
         int newId = updatedUser.getId();
         chooseLoginOrName(updatedUser, updatedUser.getName(), updatedLogin);
-        users.put(id, updatedUser);
+        users.put(newId, updatedUser);
         return updatedUser;
     }
 
