@@ -45,7 +45,7 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film createUser(@RequestBody Film newFilm) throws ValidationException, ValidationExceptionForResponse {
+    public Film createFilm(@RequestBody Film newFilm) throws ValidationException, ValidationExceptionForResponse {
         try {
             Film createdFilm = inMemoryFilmStorage.createFilm(newFilm);
             log.info("фильм добавлен: " + createdFilm);
