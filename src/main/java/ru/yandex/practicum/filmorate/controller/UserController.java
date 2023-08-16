@@ -66,19 +66,6 @@ public class UserController {
         }
     }
 
-    @PutMapping
-    public User updateUser(@RequestBody User updatedUser) throws ValidationException, ValidationExceptionForResponse {
-        try {
-            User currentUser = inMemoryUserStorage.updateUser(updatedUser);
-            log.info("пользователь обновлен: " + currentUser);
-            return currentUser;
-        } catch (ValidationException e) {
-            log.info("пользователь НЕ обновлен");
-            log.warn(e.getMessage());
-            System.out.println(e.getMessage());
-            throw new ValidationExceptionForResponse();
-        }
-    }
 
     @PutMapping("/{id}/friends/{friendId}")
     public int addInFriends(@PathVariable int id, @PathVariable int friendId) {
