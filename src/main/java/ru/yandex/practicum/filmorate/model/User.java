@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.*;
 import jakarta.validation.constraints.*;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -13,12 +13,12 @@ public class User {
     private Long id;
     @Email
     private String email;
-    @PastOrPresent
-    private LocalDate birthday;
-    private Set<Long> friends;
     @NotNull
     private String login;
     private String name;
+    @PastOrPresent
+    private LocalDate birthday;
+    private Set<Long> friends;
 
     public void addFriend(Long id) {
         friends.add(id);
