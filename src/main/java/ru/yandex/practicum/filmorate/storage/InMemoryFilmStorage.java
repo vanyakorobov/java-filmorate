@@ -27,8 +27,8 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     public Film updateFilm(Film updatedFilm) throws ValidationException {
         int id = updatedFilm.getId();
-        if (!films.containsKey(id)) {
-            throw new ValidationException("пользователь с id: " + id + " не существует!");
+        if (films.containsKey(updatedFilm.getId())) {
+            films.put(updatedFilm.getId(), updatedFilm);
         }
         nameValidation(updatedFilm.getName());
         descriptionValidation(updatedFilm.getDescription());
