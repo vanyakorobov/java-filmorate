@@ -1,21 +1,37 @@
 package ru.yandex.practicum.filmorate.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@Builder
+@AllArgsConstructor
 public class Film {
-    private int id;
+    @PositiveOrZero
+    private Long id;
+    @NotNull
     private String name;
+    @Size(min = 1, max = 200)
     private String description;
     private LocalDate releaseDate;
-    private double duration;
-    @JsonIgnore
-    private final Set<Integer> likes = new HashSet<>();
+    @Positive
+    private long duration;
+    private Set<Long> likes;
+
+    public void addLike(Long userId) {
+        likes.add(userId);
+    }
+
+    public void removeLike(Long userId) {
+        likes.remove(userId);
+    }
+
+    public int getLikesQuantity() {
+        return likes.size();
+    }
 }
