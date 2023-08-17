@@ -30,12 +30,6 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (films.containsKey(updatedFilm.getId())) {
             films.put(updatedFilm.getId(), updatedFilm);
         }
-        nameValidation(updatedFilm.getName());
-        descriptionValidation(updatedFilm.getDescription());
-        releaseDateValidation(updatedFilm.getReleaseDate());
-        durationValidation(updatedFilm.getDuration());
-
-        films.put(id, updatedFilm);
         return updatedFilm;
     }
 
