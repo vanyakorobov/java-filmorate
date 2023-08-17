@@ -17,18 +17,18 @@ public class UserControllerTest {
     private InMemoryUserStorage storage = new InMemoryUserStorage();
     private UserService service = new UserService(storage);
     private UserController controller = new UserController(storage, service);
-    private final User user = new User(1L, "lollipop@yandex.ru", "scramble", "Matthew",
-            LocalDate.of(1990, 1, 1), new HashSet<>());
-    private final User updatedUser = new User(1L, "yandex@yandex.ru", "scramble", "Matthew",
-            LocalDate.of(1990, 2, 1), new HashSet<>());
-    private final User emptyNameUser = new User(6L, "mail@yandex.ru", "user", null,
-            LocalDate.of(1990, 1, 1), new HashSet<>());
-    private final User incorrectEmailUser = new User(3L, "somebody once told me, the world is gonna roll me",
-            "awesome guy", "Andrew", LocalDate.of(1997, 8, 13), new HashSet<>());
-    private final User emptyEmailUser = new User(1L, "", "puss in boots", null,
-            LocalDate.of(1990, 1, 1), new HashSet<>());
+    private final User user = new User(1L, "vanya@yandex.ru", "login", "vanya",
+            LocalDate.of(1985, 1, 1), new HashSet<>());
+    private final User updatedUser = new User(1L, "vanya1@yandex.ru", "login", "Oleg",
+            LocalDate.of(1985, 2, 1), new HashSet<>());
+    private final User emptyNameUser = new User(6L, "vanya2@yandex.ru", "login1", null,
+            LocalDate.of(1985, 1, 1), new HashSet<>());
+    private final User incorrectEmailUser = new User(3L, "email",
+            "loglog", "Nekit", LocalDate.of(1995, 5, 42), new HashSet<>());
+    private final User emptyEmailUser = new User(1L, "", "logt", null,
+            LocalDate.of(1985, 1, 1), new HashSet<>());
     private final User commonFriend = new User(19L, "friend@yandex.ru", "friend", "Alexander",
-            LocalDate.of(1996, 4, 20), new HashSet<>());
+            LocalDate.of(1995, 1, 11), new HashSet<>());
 
     @AfterEach
     public void afterEach() {
@@ -36,14 +36,14 @@ public class UserControllerTest {
     }
 
     @Test
-    void createUser_shouldCreateAUser() {
+    void createUserTest() {
         controller.createUser(user);
 
         Assertions.assertEquals(1, controller.getUsers().size());
     }
 
     @Test
-    void getUserById_shouldReturnUserWithCorrectId() {
+    void getUserByIdTest() {
         controller.createUser(user);
         User thisUser = storage.getUserById(user.getId());
 
@@ -51,17 +51,17 @@ public class UserControllerTest {
     }
 
     @Test
-    void update_shouldUpdateUserData() {
+    void updateTest() {
         controller.createUser(user);
         controller.updateUser(updatedUser);
 
-        Assertions.assertEquals("yandex@yandex.ru", updatedUser.getEmail());
+        Assertions.assertEquals("vanya1@yandex.ru", updatedUser.getEmail());
         Assertions.assertEquals(user.getId(), updatedUser.getId());
         Assertions.assertEquals(1, controller.getUsers().size());
     }
 
     @Test
-    void createUser_shouldCreateAUserIfNameIsEmpty() {
+    void createUserIsEmpty() {
         controller.createUser(emptyNameUser);
 
         Assertions.assertEquals(6, emptyNameUser.getId());
@@ -69,19 +69,19 @@ public class UserControllerTest {
     }
 
     @Test
-    void createUser_shouldThrowExceptionIfEmailIsIncorrect() {
+    void createUserEmailIsIncorrect() {
         Assertions.assertThrows(ValidationException.class, () -> controller.createUser(incorrectEmailUser));
         Assertions.assertEquals(0, controller.getUsers().size());
     }
 
     @Test
-    void createUser_shouldThrowExceptionIfEmailIsEmpty() {
+    void createUserEmailIsEmpty() {
         Assertions.assertThrows(ValidationException.class, () -> controller.createUser(emptyEmailUser));
         Assertions.assertEquals(0, controller.getUsers().size());
     }
 
     @Test
-    void createUser_shouldNotAddUserIfLoginIsEmpty() {
+    void createUserLoginIsEmpty() {
         user.setLogin("");
 
         Assertions.assertThrows(ValidationException.class, () -> controller.createUser(user));
@@ -89,15 +89,15 @@ public class UserControllerTest {
     }
 
     @Test
-    void createUser_shouldNotAddUserIfBirthdayIsInTheFuture() {
-        user.setBirthday(LocalDate.of(2024, 6, 28));
+    void createUserFuture() {
+        user.setBirthday(LocalDate.of(3333, 3, 11));
 
         Assertions.assertThrows(ValidationException.class, () -> controller.createUser(user));
         Assertions.assertEquals(0, controller.getUsers().size());
     }
 
     @Test
-    void addFriend_shouldAddFriendToOtherUsersSet() {
+    void addFriendTest() {
         controller.createUser(user);
         controller.createUser(emptyNameUser);
         controller.addFriend(user.getId(), emptyNameUser.getId());
@@ -107,7 +107,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void deleteFriend_shouldDeleteFriendFromOtherUsersSet() {
+    void deleteFriendTest() {
         controller.createUser(user);
         controller.createUser(emptyNameUser);
         controller.addFriend(user.getId(), emptyNameUser.getId());
@@ -118,7 +118,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void getCommonFriends_shouldReturnListWithSizeOne() {
+    void getCommonFriendsTest() {
         controller.createUser(user);
         controller.createUser(emptyNameUser);
         controller.addFriend(user.getId(), emptyNameUser.getId());
@@ -131,7 +131,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void getFriends_shouldReturnFriendsListOfUser() {
+    void getFriendsTest() {
         controller.createUser(user);
         controller.createUser(emptyNameUser);
         controller.createUser(commonFriend);

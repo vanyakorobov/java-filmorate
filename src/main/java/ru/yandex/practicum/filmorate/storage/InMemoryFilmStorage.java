@@ -24,7 +24,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     public Film createFilm(Film film) {
         validate(film);
         films.put(film.getId(), film);
-        log.info("'{}' movie was added to a library, the identifier is '{}'", film.getName(), film.getId());
+        log.info("фильм создан", film.getName(), film.getId());
         return film;
     }
 
@@ -33,50 +33,47 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (films.containsKey(film.getId())) {
             validate(film);
             films.put(film.getId(), film);
-            log.info("'{}' movie was updated in a library, the identifier is '{}'", film.getName(), film.getId());
+            log.info("фильм обновлён", film.getName(), film.getId());
             return film;
         } else {
-            throw new ObjectNotFoundException("Attempt to update non-existing movie");
+            throw new ObjectNotFoundException("Такого фильма не существует");
         }
     }
 
     @Override
     public void deleteFilms() {
         films.clear();
-        log.info("Movie storage is empty now");
     }
 
     @Override
     public Film getFilmById(Long id) {
         if (!films.containsKey(id)) {
-            throw new ObjectNotFoundException("Attempt to reach non-existing movie with id '" + id + "'");
+            throw new ObjectNotFoundException("Фильма с таким id не существует" + id + "'");
         }
         return films.get(id);
     }
 
     @Override
     public List<Film> getFilms() {
-        log.info("There are '{}' movies in a library now", films.size());
         return new ArrayList<>(films.values());
     }
 
     private void validate(Film film) {
         if (film.getReleaseDate() == null ||
                 film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            throw new ValidationException("Incorrect release date");
+            throw new ValidationException("Некорректная дата");
         }
         if (film.getName().isEmpty() || film.getName().isBlank()) {
-            throw new ValidationException("Attempt to set an empty movie name");
+            throw new ValidationException("Отсутствует название фильма");
         }
         if (film.getDuration() <= 0) {
-            throw new ValidationException("Attempt to set duration less than zero");
+            throw new ValidationException("Длительность фильма не может быть меньше нуля");
         }
         if (film.getDescription().length() > 200 || film.getDescription().length() == 0) {
-            throw new ValidationException("Description increases 200 symbols or empty");
+            throw new ValidationException("Максимальное количество символов 200");
         }
         if (film.getId() == null || film.getId() <= 0) {
             film.setId(++id);
-            log.info("Movie identifier was set as '{}", film.getId());
         }
         if (film.getLikes() == null) {
             film.setLikes(new HashSet<>());

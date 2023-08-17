@@ -24,22 +24,20 @@ public class FilmControllerTest {
     private UserService userService = new UserService(userStorage);
     private FilmService service = new FilmService(storage, userService);
     private FilmController controller = new FilmController(storage, service);
-    private final Film film = new Film(1L, "Movie", "The most awesome movie I've ever seen",
+    private final Film film = new Film(1L, "Film", "Описание фильма",
+            LocalDate.of(1985, 1, 1), 111, new HashSet<>());
+    private final Film updatedFilm = new Film(1L, "Film",
+            "Описание фильма",
+            LocalDate.of(1985, 1, 1), 111, new HashSet<>());
+    private final Film noNamedFilm = new Film(1L, "", "Описание фильма",
+            LocalDate.of(1985, 1, 1), 111, new HashSet<>());
+    private final Film longDescpriptionFilm = new Film(1L, "Film",
+            "Описание этого фильма",
             LocalDate.of(2020, 2, 2), 120, new HashSet<>());
-    private final Film updatedFilm = new Film(1L, "Movie",
-            "I cried at the end, it was very thoughtful",
-            LocalDate.of(2020, 2, 2), 120, new HashSet<>());
-    private final Film noNamedFilm = new Film(1L, "", "The most awesome movie I've ever seen",
-            LocalDate.of(2020, 2, 2), 120, new HashSet<>());
-    private final Film longDescpriptionFilm = new Film(1L, "Movie",
-            "This is the most amazing and terrifying movie in my life. I love scary movies," +
-                    "but I've never seen such precise details of serial killers doing their job." +
-                    "You should definitely see this one. Actually, this movie was based on a true story. Creepy...",
-            LocalDate.of(2020, 2, 2), 120, new HashSet<>());
-    private final Film negativeDurationFilm = new Film(1L, "Movie",
-            "The most awesome movie I've ever seen",
+    private final Film negativeDurationFilm = new Film(1L, "Film",
+            "Описание фильма",
             LocalDate.of(2020, 2, 2), -15, new HashSet<>());
-    private final User user = new User(2L, "lollipop@ya.ru", "lollipop", "Martin",
+    private final User user = new User(2L, "vanya@ya.ru", "vanya", "vanya",
             LocalDate.of(1997, 3, 5), new HashSet<>());
 
     @AfterEach
@@ -55,16 +53,16 @@ public class FilmControllerTest {
     }
 
     @Test
-    void updateFilm_shouldUpdateMovieData() {
+    void updateFilmTest() {
         controller.createFilm(film);
         controller.updateFilm(updatedFilm);
 
-        Assertions.assertEquals("I cried at the end, it was very thoughtful", updatedFilm.getDescription());
+        Assertions.assertEquals("жесть какая-то", updatedFilm.getDescription());
         Assertions.assertEquals(1, controller.getFilms().size());
     }
 
     @Test
-    void getFilmById_shouldReturnAMovieWithIdOne() {
+    void getFilmByIdTest() {
         controller.createFilm(film);
         Film thisFilm = controller.getFilmById(film.getId());
 
@@ -72,19 +70,19 @@ public class FilmControllerTest {
     }
 
     @Test
-    void createFilm_shouldNotAddAMovieWithAnEmptyName() {
+    void createFilmTest() {
         Assertions.assertThrows(ValidationException.class, () -> controller.createFilm(noNamedFilm));
         Assertions.assertEquals(0, controller.getFilms().size());
     }
 
     @Test
-    void createFilm_shouldNotAddAMovieWithDescriptionMoreThan200() {
+    void createFilm200() {
         Assertions.assertThrows(ValidationException.class, () -> controller.createFilm(longDescpriptionFilm));
         Assertions.assertEquals(0, controller.getFilms().size());
     }
 
     @Test
-    void createFilm_shouldNotAddAMovieWithDateReleaseLessThan1895() {
+    void createFilm1895() {
         film.setReleaseDate(LocalDate.of(1891, 2, 2));
 
         Assertions.assertThrows(ValidationException.class, () -> controller.createFilm(film));
@@ -92,13 +90,13 @@ public class FilmControllerTest {
     }
 
     @Test
-    void createFilm_shouldNotAddAMovieIfDurationIsLessThan0() {
+    void createFilm0() {
         Assertions.assertThrows(ValidationException.class, () -> controller.createFilm(negativeDurationFilm));
         Assertions.assertEquals(0, controller.getFilms().size());
     }
 
     @Test
-    void likeAMovie_shouldAddALikeToAMovie() {
+    void likeAMovieTest() {
         userStorage.createUser(user);
         controller.createFilm(film);
         controller.addLike(film.getId(), user.getId());
@@ -107,7 +105,7 @@ public class FilmControllerTest {
     }
 
     @Test
-    void removeLike_shouldRemoveLikeFromAMovie() {
+    void removeLikeTest() {
         userStorage.createUser(user);
         controller.createFilm(film);
         controller.addLike(film.getId(), user.getId());
@@ -117,7 +115,7 @@ public class FilmControllerTest {
     }
 
     @Test
-    void getPopularMovies_shouldReturnListOfPopularMovies() {
+    void getPopularMoviesTest() {
         userStorage.createUser(user);
         controller.createFilm(film);
         controller.addLike(film.getId(), user.getId());
