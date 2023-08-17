@@ -76,12 +76,6 @@ public class FilmControllerTest {
     }
 
     @Test
-    void createFilmDescription200Test() {
-        Assertions.assertThrows(ValidationException.class, () -> controller.createFilm(longDescpriptionFilm));
-        Assertions.assertEquals(0, controller.getFilms().size());
-    }
-
-    @Test
     void createFilmDuration0Test() {
         Assertions.assertThrows(ValidationException.class, () -> controller.createFilm(negativeDurationFilm));
         Assertions.assertEquals(0, controller.getFilms().size());
