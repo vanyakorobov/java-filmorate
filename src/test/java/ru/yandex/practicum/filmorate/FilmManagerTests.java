@@ -26,7 +26,7 @@ public class FilmManagerTests {
         LocalDate releaseDate = LocalDate.of(2021, 6, 7);
         Film film = Film.builder()
                 .id(0)
-                .name("filmName")
+                .name("filmNam")
                 .description("some")
                 .releaseDate(releaseDate)
                 .duration(120)
