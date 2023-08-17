@@ -1,85 +1,103 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.ObjectNotFoundException;
+import lombok.Data;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@Slf4j
+@Data
 @Component
 public class InMemoryUserStorage implements UserStorage {
-    private final Map<Long, User> users;
-    private Long id;
+    int currentID;
 
-    public InMemoryUserStorage() {
-        users = new HashMap<>();
-        id = 0L;
+    private Map<Integer, User> users = new HashMap();
+
+    public User createUser(User newUser) throws ValidationException {
+        emailValidation(newUser.getEmail());
+        birthdayValidation(newUser.getBirthday());
+        String userLogin = newUser.getLogin();
+        loginValidation(userLogin);
+        chooseLoginOrName(newUser, newUser.getName(), userLogin);
+        newUser.setId(createID());
+        users.put(newUser.getId(), newUser);
+        return newUser;
     }
 
-    @Override
-    public User createUser(User user) {
-        validate(user);
-        users.put(user.getId(), user);
-        log.info("The user '{}' has been saved with the identifier '{}'", user.getEmail(), user.getId());
+    public User updateUser(User updatedUser) throws ValidationException {
+        if (users.containsKey(updatedUser.getId())) {
+            users.put(updatedUser.getId(), updatedUser);
+        }
+        return updatedUser;
+    }
+
+    public void emailValidation(String email) {
+        if (email != null) {
+            for (User user : users.values()) {
+                if (user.getEmail().equals(email)) {
+                    throw new ValidationException("пользователь с таким email уже существует");
+                }
+            }
+            if (email.isBlank() || !email.contains("@")) {
+                throw new ValidationException("некорректный email! ваш email: " + email);
+            }
+        } else {
+            throw new ValidationException("поле \"mail\" должно быть заполнено. Ваш email: " + email);
+        }
+    }
+
+    public void loginValidation(String login) {
+        if (login != null) {
+            if (login.isBlank() || login.contains(" ")) {
+                throw new ValidationException("некорректный login");
+            }
+        } else {
+            throw new ValidationException("поле \"login\" должно быть заполнено");
+        }
+    }
+
+    public void birthdayValidation(LocalDate birthday) {
+        if (birthday != null) {
+            if (birthday.isAfter(LocalDate.now())) {
+                throw new ValidationException("birthday не может быть в будущем");
+            }
+        } else {
+            throw new ValidationException("поле \"birthday\" должно быть заполнено");
+        }
+    }
+
+    public boolean nameValidationFailed(String name) {
+        if (name == null || name.isBlank()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public List<User> getUsersList() {
+        List<User> list = new ArrayList<>(users.values());
+        return list;
+    }
+
+    public User getUserById(int id) {
+        User user = users.get(id);
         return user;
     }
 
-    @Override
-    public User updateUser(User user) {
-        if (users.containsKey(user.getId())) {
-            validate(user);
-            users.put(user.getId(), user);
-            log.info("'{}' info with identifier '{}' was updated", user.getLogin(), user.getId());
-            return user;
+    public void chooseLoginOrName(User user, String name, String login) {
+        if (nameValidationFailed(name)) {
+            user.setName(login);
         } else {
-            throw new ObjectNotFoundException("Attempt to update non-existing user");
+            user.setName(name);
         }
     }
 
-    @Override
-    public void deleteUsers() {
-        users.clear();
-        log.info("User storage is empty now");
-    }
-
-    @Override
-    public User getUserById(Long id) {
-        if (!users.containsKey(id)) {
-            throw new ObjectNotFoundException("Attempt to reach non-existing user with id '" + id + "'");
-        }
-        return users.get(id);
-    }
-
-    @Override
-    public List<User> getUsers() {
-        log.info("The number of users: '{}'", users.size());
-        return new ArrayList<>(users.values());
-    }
-
-    private void validate(User user) {
-        if (user.getBirthday().isAfter(LocalDate.now()) || user.getBirthday() == null) {
-            throw new ValidationException("Incorrect user's birthday with identifier '" + user.getId() + "'");
-        }
-        if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
-            throw new ValidationException("Incorrect user's email with identifier '" + user.getId() + "'");
-        }
-        if (user.getName() == null || user.getName().isBlank()) {
-            user.setName(user.getLogin());
-            log.info("User's name with identifier '{}' was set as '{}'", user.getId(), user.getName());
-        }
-        if (user.getLogin().isBlank() || user.getLogin().isEmpty()) {
-            throw new ValidationException("Incorrect user's login with identifier '" + user.getId() + "'");
-        }
-        if (user.getFriends() == null) {
-            user.setFriends(new HashSet<>());
-        }
-        if (user.getId() == null || user.getId() <= 0) {
-            user.setId(++id);
-            log.info("'{}' identifier was set as '{}'", user.getEmail(), user.getId());
-        }
+    public int createID() {
+        return ++currentID;
     }
 }

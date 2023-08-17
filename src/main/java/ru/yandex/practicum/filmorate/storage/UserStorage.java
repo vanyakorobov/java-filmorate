@@ -2,18 +2,26 @@ package ru.yandex.practicum.filmorate.storage;
 
 import ru.yandex.practicum.filmorate.model.User;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface UserStorage {
 
-    User createUser(User user);
+    User createUser(User newUser);
 
-    User updateUser(User user);
+    User updateUser(User updatedUser);
 
-    void deleteUsers();
+    void emailValidation(String email);
 
-    User getUserById(Long id);
+    void loginValidation(String login);
 
-    List<User> getUsers();
+    void birthdayValidation(LocalDate birthday);
 
+    boolean nameValidationFailed(String name);
+
+    List<User> getUsersList();
+
+    void chooseLoginOrName(User user, String name, String login);
+
+    int createID();
 }
