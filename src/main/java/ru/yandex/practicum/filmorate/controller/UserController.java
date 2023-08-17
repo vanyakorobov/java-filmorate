@@ -55,7 +55,7 @@ public class UserController {
             ValidationExceptionForResponse {
         try {
             User createdUser = inMemoryUserStorage.createUser(newUser);
-            log.info("добавлен пользователь: " + createdUser);
+            log.info("добавлен пользователь" + createdUser);
             return createdUser;
 
         } catch (ValidationException e) {
@@ -70,10 +70,10 @@ public class UserController {
     public User updateUser(@RequestBody User updatedUser) throws ValidationException, ValidationExceptionForResponse {
         try {
             User currentUser = inMemoryUserStorage.updateUser(updatedUser);
-            log.info("пользователь обновлен: " + currentUser);
+            log.info("пользователь обновлен " + currentUser);
             return currentUser;
         } catch (ValidationException e) {
-            log.info("пользователь НЕ обновлен");
+            log.info("пользователь не обновлен");
             log.warn(e.getMessage());
             System.out.println(e.getMessage());
             throw new ValidationExceptionForResponse();
