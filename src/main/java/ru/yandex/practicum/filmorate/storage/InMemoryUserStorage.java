@@ -29,6 +29,14 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
+    public User getUserById(Long id) {
+        if (!users.containsKey(id)) {
+            throw new ObjectNotFoundException("Пользователя с таким id не существует " + id + "'");
+        }
+        return users.get(id);
+    }
+
+    @Override
     public User updateUser(User user) {
         if (users.containsKey(user.getId())) {
             validate(user);
@@ -43,14 +51,6 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public void deleteUsers() {
         users.clear();
-    }
-
-    @Override
-    public User getUserById(Long id) {
-        if (!users.containsKey(id)) {
-            throw new ObjectNotFoundException("Пользователя с таким id не существует " + id + "'");
-        }
-        return users.get(id);
     }
 
     @Override

@@ -17,18 +17,18 @@ public class UserControllerTest {
     private InMemoryUserStorage storage = new InMemoryUserStorage();
     private UserService service = new UserService(storage);
     private UserController controller = new UserController(storage, service);
-    private final User user = new User(1L, "vanya@yandex.ru", "login", "vanya",
-            LocalDate.of(1985, 1, 1), new HashSet<>());
-    private final User updatedUser = new User(1L, "vanya1@yandex.ru", "login", "Oleg",
-            LocalDate.of(1985, 2, 1), new HashSet<>());
-    private final User emptyNameUser = new User(6L, "vanya2@yandex.ru", "login1", null,
-            LocalDate.of(1985, 1, 1), new HashSet<>());
-    private final User incorrectEmailUser = new User(3L, "email",
-            "loglog", "Nekit", LocalDate.of(1995, 5, 42), new HashSet<>());
-    private final User emptyEmailUser = new User(1L, "", "logt", null,
-            LocalDate.of(1985, 1, 1), new HashSet<>());
+    private final User user = new User(1L, "vanya@yandex.ru", "login", "Vanya",
+            LocalDate.of(1995, 1, 1), new HashSet<>());
+    private final User updatedUser = new User(1L, "oleg@yandex.ru", "login", "Vanya",
+            LocalDate.of(1995, 2, 1), new HashSet<>());
+    private final User emptyNameUser = new User(6L, "nikita@yandex.ru", "login1", null,
+            LocalDate.of(1995, 1, 1), new HashSet<>());
+    private final User incorrectEmailUser = new User(3L, "somebody once told me, the world is gonna roll me",
+            "loglog", "Dasha", LocalDate.of(1997, 8, 13), new HashSet<>());
+    private final User emptyEmailUser = new User(1L, "", "puss in boots", null,
+            LocalDate.of(1990, 1, 1), new HashSet<>());
     private final User commonFriend = new User(19L, "friend@yandex.ru", "friend", "Alexander",
-            LocalDate.of(1995, 1, 11), new HashSet<>());
+            LocalDate.of(1888, 5, 5), new HashSet<>());
 
     @AfterEach
     public void afterEach() {
@@ -43,6 +43,16 @@ public class UserControllerTest {
     }
 
     @Test
+    void updateTest() {
+        controller.createUser(user);
+        controller.updateUser(updatedUser);
+
+        Assertions.assertEquals("oleg@yandex.ru", updatedUser.getEmail());
+        Assertions.assertEquals(user.getId(), updatedUser.getId());
+        Assertions.assertEquals(1, controller.getUsers().size());
+    }
+
+    @Test
     void getUserByIdTest() {
         controller.createUser(user);
         User thisUser = storage.getUserById(user.getId());
@@ -51,37 +61,29 @@ public class UserControllerTest {
     }
 
     @Test
-    void updateTest() {
-        controller.createUser(user);
-        controller.updateUser(updatedUser);
+    void createUserFutureTest() {
+        user.setBirthday(LocalDate.of(2024, 6, 28));
 
-        Assertions.assertEquals("vanya1@yandex.ru", updatedUser.getEmail());
-        Assertions.assertEquals(user.getId(), updatedUser.getId());
-        Assertions.assertEquals(1, controller.getUsers().size());
-    }
-
-    @Test
-    void createUserIsEmpty() {
-        controller.createUser(emptyNameUser);
-
-        Assertions.assertEquals(6, emptyNameUser.getId());
-        Assertions.assertEquals("user", emptyNameUser.getName());
-    }
-
-    @Test
-    void createUserEmailIsIncorrect() {
-        Assertions.assertThrows(ValidationException.class, () -> controller.createUser(incorrectEmailUser));
+        Assertions.assertThrows(ValidationException.class, () -> controller.createUser(user));
         Assertions.assertEquals(0, controller.getUsers().size());
     }
 
     @Test
-    void createUserEmailIsEmpty() {
+    void createUserNameIsEmptyTest() {
+        controller.createUser(emptyNameUser);
+
+        Assertions.assertEquals(6, emptyNameUser.getId());
+        Assertions.assertEquals("login1", emptyNameUser.getName());
+    }
+
+    @Test
+    void createUserEmailIsEmptyTest() {
         Assertions.assertThrows(ValidationException.class, () -> controller.createUser(emptyEmailUser));
         Assertions.assertEquals(0, controller.getUsers().size());
     }
 
     @Test
-    void createUserLoginIsEmpty() {
+    void createUserLoginIsEmptyTest() {
         user.setLogin("");
 
         Assertions.assertThrows(ValidationException.class, () -> controller.createUser(user));
@@ -89,21 +91,9 @@ public class UserControllerTest {
     }
 
     @Test
-    void createUserFuture() {
-        user.setBirthday(LocalDate.of(3333, 3, 11));
-
-        Assertions.assertThrows(ValidationException.class, () -> controller.createUser(user));
+    void createUserEmailIncorrectTest() {
+        Assertions.assertThrows(ValidationException.class, () -> controller.createUser(incorrectEmailUser));
         Assertions.assertEquals(0, controller.getUsers().size());
-    }
-
-    @Test
-    void addFriendTest() {
-        controller.createUser(user);
-        controller.createUser(emptyNameUser);
-        controller.addFriend(user.getId(), emptyNameUser.getId());
-
-        Assertions.assertTrue(user.getFriendsQuantity() != 0);
-        Assertions.assertTrue(emptyNameUser.getFriendsQuantity() != 0);
     }
 
     @Test
@@ -118,19 +108,6 @@ public class UserControllerTest {
     }
 
     @Test
-    void getCommonFriendsTest() {
-        controller.createUser(user);
-        controller.createUser(emptyNameUser);
-        controller.addFriend(user.getId(), emptyNameUser.getId());
-        controller.createUser(commonFriend);
-        controller.addFriend(user.getId(), commonFriend.getId());
-        controller.addFriend(emptyNameUser.getId(), commonFriend.getId());
-        List<User> commonFriendList = controller.getCommonFriends(user.getId(), emptyNameUser.getId());
-
-        Assertions.assertEquals(1, commonFriendList.size());
-    }
-
-    @Test
     void getFriendsTest() {
         controller.createUser(user);
         controller.createUser(emptyNameUser);
@@ -142,4 +119,26 @@ public class UserControllerTest {
         Assertions.assertEquals(2, listOfUsersFriends.size());
     }
 
+    @Test
+    void addFriendTest() {
+        controller.createUser(user);
+        controller.createUser(emptyNameUser);
+        controller.addFriend(user.getId(), emptyNameUser.getId());
+
+        Assertions.assertTrue(user.getFriendsQuantity() != 0);
+        Assertions.assertTrue(emptyNameUser.getFriendsQuantity() != 0);
+    }
+
+    @Test
+    void getCommonFriendsTest() {
+        controller.createUser(user);
+        controller.createUser(emptyNameUser);
+        controller.addFriend(user.getId(), emptyNameUser.getId());
+        controller.createUser(commonFriend);
+        controller.addFriend(user.getId(), commonFriend.getId());
+        controller.addFriend(emptyNameUser.getId(), commonFriend.getId());
+        List<User> commonFriendList = controller.getCommonFriends(user.getId(), emptyNameUser.getId());
+
+        Assertions.assertEquals(1, commonFriendList.size());
+    }
 }

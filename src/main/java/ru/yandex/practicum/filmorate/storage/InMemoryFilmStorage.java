@@ -29,6 +29,11 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
+    public void deleteFilms() {
+        films.clear();
+    }
+
+    @Override
     public Film updateFilm(Film film) {
         if (films.containsKey(film.getId())) {
             validate(film);
@@ -38,11 +43,6 @@ public class InMemoryFilmStorage implements FilmStorage {
         } else {
             throw new ObjectNotFoundException("Такого фильма не существует");
         }
-    }
-
-    @Override
-    public void deleteFilms() {
-        films.clear();
     }
 
     @Override
