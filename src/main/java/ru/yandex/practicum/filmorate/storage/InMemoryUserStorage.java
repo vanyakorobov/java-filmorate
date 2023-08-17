@@ -30,7 +30,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     public User updateUser(User updatedUser) throws ValidationException {
-        if(users.containsKey(updatedUser.getId())) {
+        if (users.containsKey(updatedUser.getId())) {
             users.put(updatedUser.getId(), updatedUser);
         }
         return updatedUser;
