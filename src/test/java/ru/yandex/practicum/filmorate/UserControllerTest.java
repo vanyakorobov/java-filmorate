@@ -16,7 +16,7 @@ import java.util.List;
 public class UserControllerTest {
     private InMemoryUserStorage storage = new InMemoryUserStorage();
     private UserService service = new UserService(storage);
-    private UserController controller = new UserController(storage, service);
+    private UserController controller = new UserController(service);
     private final User user = new User(1L, "vanya@yandex.ru", "login", "Vanya",
             LocalDate.of(1995, 1, 1), new HashSet<>());
     private final User updatedUser = new User(1L, "oleg@yandex.ru", "login", "Vanya",
