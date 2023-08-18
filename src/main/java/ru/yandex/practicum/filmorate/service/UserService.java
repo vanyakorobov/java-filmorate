@@ -18,21 +18,21 @@ public class UserService extends InMemoryUserStorage {
     private final UserStorage userStorage;
 
     public void addFriend(Long userId, Long friendId) {
-        User user = userStorage.getUserById(userId);
-        User friend = userStorage.getUserById(friendId);
+        User user = getUserById(userId);
+        User friend = getUserById(friendId);
         user.addFriend(friendId);
         friend.addFriend(userId);
     }
 
     public void deleteFriend(Long userId, Long friendId) {
-        User user = userStorage.getUserById(userId);
-        User friend = userStorage.getUserById(friendId);
+        User user = getUserById(userId);
+        User friend = getUserById(friendId);
         user.removeFriend(friendId);
         friend.removeFriend(userId);
     }
 
     public List<User> getFriends(Long userId) {
-        User user = userStorage.getUserById(userId);
+        User user = getUserById(userId);
         Set<Long> friends = user.getFriends();
         if (friends.isEmpty()) {
             throw new ObjectNotFoundException("писок друзей юзера" + userId + "пуст");
@@ -47,8 +47,8 @@ public class UserService extends InMemoryUserStorage {
     }
 
     public List<User> getCommonFriends(Long userId, Long friendId) {
-        User user = userStorage.getUserById(userId);
-        User friend = userStorage.getUserById(friendId);
+        User user = getUserById(userId);
+        User friend = getUserById(friendId);
         Set<Long> userFriends = user.getFriends();
         Set<Long> friendFriends = friend.getFriends();
         if (userFriends.stream().anyMatch(friendFriends::contains)) {
