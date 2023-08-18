@@ -19,7 +19,7 @@ public class FilmService extends InMemoryFilmStorage {
 
     public void addLike(Long filmId, Long userId) {
         Film film = getFilmById(filmId);
-        userService.getUserStorage().getUserById(userId);
+        userService.getUserById(userId);
         if (film == null) {
             throw new ObjectNotFoundException("Фильма с таким id не существует" + filmId);
         }
@@ -29,7 +29,7 @@ public class FilmService extends InMemoryFilmStorage {
 
     public void deleteLike(Long filmId, Long userId) {
         Film film = getFilmById(filmId);
-        userService.getUserStorage().getUserById(userId);
+        userService.getUserById(userId);
         if (film == null) {
             throw new ObjectNotFoundException("Фильма с таким id не существует" + filmId);
         }
