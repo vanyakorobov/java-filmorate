@@ -21,7 +21,7 @@ public class FilmControllerTest {
     private FilmStorage storage = new InMemoryFilmStorage();
     private UserStorage userStorage = new InMemoryUserStorage();
     private UserService userService = new UserService(userStorage);
-    private FilmService service = new FilmService(storage, userService);
+    private FilmService service = new FilmService(userService);
     private FilmController controller = new FilmController(service);
     private final Film negativeDurationFilm = new Film(1L, "Movie",
             "Описание фильма",
