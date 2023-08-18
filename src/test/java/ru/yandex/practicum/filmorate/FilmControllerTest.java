@@ -23,7 +23,7 @@ public class FilmControllerTest {
     private UserStorage userStorage = new InMemoryUserStorage();
     private UserService userService = new UserService(userStorage);
     private FilmService service = new FilmService(storage, userService);
-    private FilmController controller = new FilmController(storage, service);
+    private FilmController controller = new FilmController(service);
     private final Film negativeDurationFilm = new Film(1L, "Movie",
             "Описание фильма",
             LocalDate.of(1995, 2, 2), -15, new HashSet<>());
