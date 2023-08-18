@@ -16,11 +16,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FilmService extends InMemoryFilmStorage {
-    private final FilmStorage filmStorage;
     private final UserService userService;
 
     public void addLike(Long filmId, Long userId) {
-        Film film = filmStorage.getFilmById(filmId);
+        Film film = getFilmById(filmId);
         userService.getUserStorage().getUserById(userId);
         if (film == null) {
             throw new ObjectNotFoundException("Фильма с таким id не существует" + filmId);
@@ -30,7 +29,7 @@ public class FilmService extends InMemoryFilmStorage {
     }
 
     public void deleteLike(Long filmId, Long userId) {
-        Film film = filmStorage.getFilmById(filmId);
+        Film film = getFilmById(filmId);
         userService.getUserStorage().getUserById(userId);
         if (film == null) {
             throw new ObjectNotFoundException("Фильма с таким id не существует" + filmId);
@@ -40,7 +39,7 @@ public class FilmService extends InMemoryFilmStorage {
     }
 
     public List<Film> getPopularFilms(int count) {
-        return filmStorage.getFilms().stream()
+        return getFilms().stream()
                 .sorted(Comparator.comparingInt(Film::getLikesQuantity).reversed())
                 .limit(count).collect(Collectors.toList());
     }
