@@ -42,10 +42,6 @@ public class UserService extends InMemoryUserStorage {
                 .collect(Collectors.toList());
     }
 
-    public UserStorage getUserStorage() {
-        return userStorage;
-    }
-
     public List<User> getCommonFriends(Long userId, Long friendId) {
         User user = getUserById(userId);
         User friend = getUserById(friendId);
