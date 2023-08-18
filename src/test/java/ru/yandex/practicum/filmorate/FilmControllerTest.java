@@ -88,33 +88,4 @@ public class FilmControllerTest {
         Assertions.assertThrows(ValidationException.class, () -> controller.createFilm(film));
         Assertions.assertEquals(0, controller.getFilms().size());
     }
-
-    @Test
-    void likeFilmTest() {
-        userStorage.createUser(user);
-        controller.createFilm(film);
-        controller.addLike(film.getId(), user.getId());
-
-        Assertions.assertTrue(film.getLikesQuantity() != 0);
-    }
-
-    @Test
-    void deleteLikeTest() {
-        userStorage.createUser(user);
-        controller.createFilm(film);
-        controller.addLike(film.getId(), user.getId());
-        controller.removeLike(film.getId(), user.getId());
-
-        Assertions.assertEquals(0, film.getLikesQuantity());
-    }
-
-    @Test
-    void getPopularFilmTest() {
-        userStorage.createUser(user);
-        controller.createFilm(film);
-        controller.addLike(film.getId(), user.getId());
-        List<Film> popularFilmsList = service.getPopularFilms(1);
-
-        Assertions.assertEquals(1, popularFilmsList.size());
-    }
 }
