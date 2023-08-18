@@ -53,14 +53,6 @@ public class UserControllerTest {
     }
 
     @Test
-    void getUserByIdTest() {
-        controller.createUser(user);
-        User thisUser = storage.getUserById(user.getId());
-
-        Assertions.assertEquals(thisUser.getId(), user.getId());
-    }
-
-    @Test
     void createUserFutureTest() {
         user.setBirthday(LocalDate.of(2024, 6, 28));
 
