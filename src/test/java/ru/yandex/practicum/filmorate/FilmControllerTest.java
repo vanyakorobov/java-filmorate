@@ -20,7 +20,7 @@ import java.util.HashSet;
 public class FilmControllerTest {
     private FilmStorage storage = new InMemoryFilmStorage();
     private UserStorage userStorage = new InMemoryUserStorage();
-    private UserService userService = new UserService(userStorage);
+    private UserService userService = new UserService();
     private FilmService service = new FilmService(userService);
     private FilmController controller = new FilmController(service);
     private final Film negativeDurationFilm = new Film(1L, "Movie",
