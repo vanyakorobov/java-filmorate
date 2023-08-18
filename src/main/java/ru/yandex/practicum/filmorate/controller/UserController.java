@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.List;
 
@@ -14,26 +15,28 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     @Autowired
+    private final UserStorage userStorage;
+    @Autowired
     private final UserService userService;
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        return userService.createUser(user);
+        return userStorage.createUser(user);
     }
 
     @GetMapping
     public List<User> getUsers() {
-        return userService.getUsers();
+        return userStorage.getUsers();
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
-        return userService.updateUser(user);
+        return userStorage.updateUser(user);
     }
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+        return userStorage.getUserById(id);
     }
 
     @PutMapping("/{id}/friends/{friendId}")

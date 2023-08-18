@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.*;
@@ -14,25 +13,25 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserService extends InMemoryUserStorage {
+public class UserService {
     private final UserStorage userStorage;
 
     public void addFriend(Long userId, Long friendId) {
-        User user = getUserById(userId);
-        User friend = getUserById(friendId);
+        User user = userStorage.getUserById(userId);
+        User friend = userStorage.getUserById(friendId);
         user.addFriend(friendId);
         friend.addFriend(userId);
     }
 
     public void deleteFriend(Long userId, Long friendId) {
-        User user = getUserById(userId);
-        User friend = getUserById(friendId);
+        User user = userStorage.getUserById(userId);
+        User friend = userStorage.getUserById(friendId);
         user.removeFriend(friendId);
         friend.removeFriend(userId);
     }
 
     public List<User> getFriends(Long userId) {
-        User user = getUserById(userId);
+        User user = userStorage.getUserById(userId);
         Set<Long> friends = user.getFriends();
         if (friends.isEmpty()) {
             throw new ObjectNotFoundException("писок друзей юзера" + userId + "пуст");
@@ -42,9 +41,13 @@ public class UserService extends InMemoryUserStorage {
                 .collect(Collectors.toList());
     }
 
+    public UserStorage getUserStorage() {
+        return userStorage;
+    }
+
     public List<User> getCommonFriends(Long userId, Long friendId) {
-        User user = getUserById(userId);
-        User friend = getUserById(friendId);
+        User user = userStorage.getUserById(userId);
+        User friend = userStorage.getUserById(friendId);
         Set<Long> userFriends = user.getFriends();
         Set<Long> friendFriends = friend.getFriends();
         if (userFriends.stream().anyMatch(friendFriends::contains)) {
