@@ -11,11 +11,12 @@ import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 
 public class UserControllerTest {
     private InMemoryUserStorage storage = new InMemoryUserStorage();
     private UserService service = new UserService(storage);
-    private UserController controller = new UserController(service);
+    private UserController controller = new UserController(storage, service);
     private final User user = new User(1L, "vanya@yandex.ru", "login", "Vanya",
             LocalDate.of(1995, 1, 1), new HashSet<>());
     private final User updatedUser = new User(1L, "oleg@yandex.ru", "login", "Vanya",
@@ -52,6 +53,14 @@ public class UserControllerTest {
     }
 
     @Test
+    void getUserByIdTest() {
+        controller.createUser(user);
+        User thisUser = storage.getUserById(user.getId());
+
+        Assertions.assertEquals(thisUser.getId(), user.getId());
+    }
+
+    @Test
     void createUserFutureTest() {
         user.setBirthday(LocalDate.of(2024, 6, 28));
 
@@ -85,5 +94,51 @@ public class UserControllerTest {
     void createUserEmailIncorrectTest() {
         Assertions.assertThrows(ValidationException.class, () -> controller.createUser(incorrectEmailUser));
         Assertions.assertEquals(0, controller.getUsers().size());
+    }
+
+    @Test
+    void deleteFriendTest() {
+        controller.createUser(user);
+        controller.createUser(emptyNameUser);
+        controller.addFriend(user.getId(), emptyNameUser.getId());
+        controller.removeFriend(user.getId(), emptyNameUser.getId());
+
+        Assertions.assertEquals(0, user.getFriendsQuantity());
+        Assertions.assertEquals(0, emptyNameUser.getFriendsQuantity());
+    }
+
+    @Test
+    void getFriendsTest() {
+        controller.createUser(user);
+        controller.createUser(emptyNameUser);
+        controller.createUser(commonFriend);
+        controller.addFriend(user.getId(), emptyNameUser.getId());
+        controller.addFriend(user.getId(), commonFriend.getId());
+        List<User> listOfUsersFriends = controller.getFriends(user.getId());
+
+        Assertions.assertEquals(2, listOfUsersFriends.size());
+    }
+
+    @Test
+    void addFriendTest() {
+        controller.createUser(user);
+        controller.createUser(emptyNameUser);
+        controller.addFriend(user.getId(), emptyNameUser.getId());
+
+        Assertions.assertTrue(user.getFriendsQuantity() != 0);
+        Assertions.assertTrue(emptyNameUser.getFriendsQuantity() != 0);
+    }
+
+    @Test
+    void getCommonFriendsTest() {
+        controller.createUser(user);
+        controller.createUser(emptyNameUser);
+        controller.addFriend(user.getId(), emptyNameUser.getId());
+        controller.createUser(commonFriend);
+        controller.addFriend(user.getId(), commonFriend.getId());
+        controller.addFriend(emptyNameUser.getId(), commonFriend.getId());
+        List<User> commonFriendList = controller.getCommonFriends(user.getId(), emptyNameUser.getId());
+
+        Assertions.assertEquals(1, commonFriendList.size());
     }
 }
