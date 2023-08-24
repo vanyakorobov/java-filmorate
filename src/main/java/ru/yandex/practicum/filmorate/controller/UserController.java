@@ -1,54 +1,58 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.exception.ValidationExceptionForResponse;
-import lombok.extern.slf4j.Slf4j;
-
-import ru.yandex.practicum.filmorate.manager.UsersManager;
-import ru.yandex.practicum.filmorate.model.User;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@Slf4j
+@RequiredArgsConstructor
 public class UserController {
-    private UsersManager usersManager = new UsersManager();
-
-    @GetMapping
-    public List<User> getUsersList() {
-        List<User> users = usersManager.getUsersList();
-        log.info("выдан список пользователей" + users);
-        return users;
-    }
+    @Autowired
+    private final UserService userService;
 
     @PostMapping
-    public User createUser(@RequestBody User newUser) throws ValidationException,
-            ValidationExceptionForResponse {
-        try {
-            User createdUser = usersManager.createUser(newUser);
-            log.info("добавлен пользователь" + createdUser);
-            return createdUser;
+    public User createUser(@Valid @RequestBody User user) {
+        return userService.createUser(user);
+    }
 
-        } catch (ValidationException e) {
-            log.info("пользователь не добавлен");
-            log.warn(e.getMessage());
-            System.out.println(e.getMessage());
-            throw new ValidationExceptionForResponse();
-        }
+    @GetMapping
+    public List<User> getUsers() {
+        return userService.getUsers();
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User updatedUser) throws ValidationException, ValidationExceptionForResponse {
-        try {
-            User currentUser = usersManager.updateUser(updatedUser);
-            log.info("пользователь обновлен " + currentUser);
-            return currentUser;
-        } catch (ValidationException e) {
-            log.info("пользователь не обновлен");
-            log.warn(e.getMessage());
-            System.out.println(e.getMessage());
-            throw new ValidationExceptionForResponse();
-        }
+    public User updateUser(@Valid @RequestBody User user) {
+        return userService.updateUser(user);
+    }
+
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        userService.addFriend(id, friendId);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void removeFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        userService.deleteFriend(id, friendId);
+    }
+
+    @GetMapping("/{id}/friends")
+    public List<User> getFriends(@PathVariable Long id) {
+        return userService.getFriends(id);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public List<User> getCommonFriends(@PathVariable Long id, @PathVariable Long otherId) {
+        return userService.getCommonFriends(id, otherId);
     }
 }

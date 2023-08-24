@@ -1,51 +1,53 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.exception.ValidationExceptionForResponse;
-import lombok.extern.slf4j.Slf4j;
-import ru.yandex.practicum.filmorate.manager.FilmsManager;
-
-import ru.yandex.practicum.filmorate.model.Film;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
+import java.util.List;
 
 @RestController
 @RequestMapping("/films")
-@Slf4j
+@RequiredArgsConstructor
 public class FilmController {
-    private FilmsManager filmsManager = new FilmsManager();
-
-    @GetMapping
-    public List<Film> getFilmsList() {
-        List<Film> films = filmsManager.getFilmsList();
-        log.info("выдан список фильмов" + films);
-        return films;
-    }
+    @Autowired
+    private final FilmService filmService;
 
     @PostMapping
-    public Film createUser(@RequestBody Film newFilm) throws ValidationException, ValidationExceptionForResponse {
-        try {
-            Film createdFilm = filmsManager.createFilm(newFilm);
-            log.info("фильм добавлен: " + createdFilm);
-            return createdFilm;
-        } catch (ValidationException e) {
-            log.warn("фильм не добавлен" + e.getMessage());
-            throw new ValidationExceptionForResponse();
-        }
+    public Film createFilm(@Valid @RequestBody Film film) {
+        return filmService.createFilm(film);
+    }
+
+    @GetMapping
+    public List<Film> getFilms() {
+        return filmService.getFilms();
     }
 
     @PutMapping
-    public Film updateFilm(@RequestBody Film updatedFilm) throws ValidationException, ValidationExceptionForResponse {
-        try {
-            Film currentFilm = filmsManager.updateFilm(updatedFilm);
-            log.info("фильм обновлён" + currentFilm);
-            return currentFilm;
-        } catch (ValidationException e) {
-            log.info("фильм не обновлён");
-            log.warn(e.getMessage());
-            System.out.println(e.getMessage());
-            throw new ValidationExceptionForResponse();
-        }
+    public Film updateFilm(@Valid @RequestBody Film film) {
+        return filmService.updateFilm(film);
+    }
+
+    @GetMapping("/{id}")
+    public Film getFilmById(@PathVariable Long id) {
+        return filmService.getFilmById(id);
+    }
+
+    @GetMapping("/popular")
+    public List<Film> getPopularMovies(@RequestParam(defaultValue = "10") Integer count) {
+        return filmService.getPopularFilms(count);
+    }
+
+    @PutMapping("/{id}/like/{userId}")
+    public void addLike(@PathVariable Long id, @PathVariable Long userId) {
+        filmService.addLike(id, userId);
+    }
+
+    @DeleteMapping("/{id}/like/{userId}")
+    public void removeLike(@PathVariable Long id, @PathVariable Long userId) {
+        filmService.deleteLike(id, userId);
     }
 }
